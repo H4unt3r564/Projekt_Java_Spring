@@ -11,7 +11,4 @@ public class MainController {
 
     @GetMapping("/rejestracja")
     public String registerPage() {return "rejestracja"; }
-
-    @GetMapping("/index")
-    public String indexPage() {return "index"; }
 }

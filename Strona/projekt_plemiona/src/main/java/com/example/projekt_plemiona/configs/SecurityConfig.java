@@ -28,7 +28,7 @@ public class SecurityConfig {
                 }))
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/index", true)
+                        .defaultSuccessUrl("/wioska", true)
                         .permitAll()
                 )
                 .logout( logout -> logout
