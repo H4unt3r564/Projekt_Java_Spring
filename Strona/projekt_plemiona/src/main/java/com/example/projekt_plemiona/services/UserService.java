@@ -1,6 +1,6 @@
 package com.example.projekt_plemiona.services;
 
-import com.example.projekt_plemiona.exceptions.PlayerNotFoundException;
+import com.example.projekt_plemiona.exceptions.UserNotFoundException;
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.repositories.PlayerRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public Player findById(Long id) {
-        return playerRepository.findById(id).orElseThrow(() -> new PlayerNotFoundException(id.toString()));
+        return playerRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
 
     public void delete(Long id) { playerRepository.deleteById(id); }

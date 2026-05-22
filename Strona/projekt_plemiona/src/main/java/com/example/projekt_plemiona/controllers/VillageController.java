@@ -1,7 +1,7 @@
 package com.example.projekt_plemiona.controllers;
 
 import com.example.projekt_plemiona.configs.SecurityConfig;
-import com.example.projekt_plemiona.exceptions.PlayerNotFoundException;
+import com.example.projekt_plemiona.exceptions.UserNotFoundException;
 import com.example.projekt_plemiona.models.BuildingType;
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
@@ -51,7 +51,7 @@ public class VillageController {
         String username = auth.getName();
 
         Player player = playerRepository.findByUsername(username)
-                .orElseThrow(() -> new PlayerNotFoundException("Nie ma takiego gracza"));
+                .orElseThrow(() -> new UserNotFoundException("Nie ma takiego gracza"));
 
         Village village = villageRepository.findByPlayer_PlayerId(player.getPlayerId())
                 .orElse(null);
