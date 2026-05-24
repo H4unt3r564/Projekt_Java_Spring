@@ -6,6 +6,11 @@
 </head>
 <body>
 
+<div th:if="${error}" class="error-box">
+    <span th:text="${error}"></span>
+    <br/>
+</div>
+
 <h1>Wioska gracza</h1>
 
 <p>Username: <span th:text="${player.username}"></span></p>
@@ -25,9 +30,6 @@
                 <span th:case="'FARM'">🌾</span>
                 <span th:case="'BARRACKS'">🏹</span>
                 <span th:case="'HEADQUARTERS'">🏰</span>
-                <span th:case="'MARKET'">🏪</span>
-                <span th:case="'SMITHY'">⚒️</span>
-                <span th:case="'STABLE'">🐎</span>
                 <span th:case="'WALL'">🧱</span>
                 <span th:case="'WAREHOUSE'">📦</span>
                 <span th:case="*">🏠</span>
@@ -68,9 +70,9 @@
 
 <h2>Zasoby</h2>
 
-<p>Drewno: <span th:text="${village.wood}"></span></p>
-<p>Glina: <span th:text="${village.clay}"></span></p>
-<p>Żelazo: <span th:text="${village.iron}"></span></p>
+<p>Drewno: <span id="wood" th:text="${village.wood}"></span></p>
+<p>Glina: <span id="clay" th:text="${village.clay}"></span></p>
+<p>Żelazo: <span id="iron" th:text="${village.iron}"></span></p>
 
 </body>
 </html>

@@ -107,3 +107,13 @@
 .tile {
     background: #34495e;
 }
+
+.error-box {
+    background: #e74c3c;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 15px auto;
+    width: fit-content;
+    font-weight: bold;
+}
