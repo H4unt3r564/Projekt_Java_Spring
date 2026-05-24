@@ -94,16 +94,66 @@
 }
 
 /* BUILDING COLORS */
-.FARM { background: #2ecc71; }
-.BARRACKS { background: #e74c3c; }
-.HEADQUARTERS { background: #3498db; }
-.MARKET { background: #f1c40f; color: black; }
-.SMITHY { background: #95a5a6; }
-.STABLE { background: #e67e22; }
-.WALL { background: #7f8c8d; }
-.WAREHOUSE { background: #8e44ad; }
+/* NOWE BUILDINGI */
+
+.LUMBER-MILL {
+    background: #27ae60;
+}
+
+.CLAY-PIT {
+    background: #d35400;
+}
+
+.IRON-MINE {
+    background: #7f8c8d;
+}
+
+/* STARE */
+
+.FARM {
+    background: #2ecc71;
+}
+
+.BARRACKS {
+    background: #e74c3c;
+}
+
+.HEADQUARTERS {
+    background: #3498db;
+}
+
+.MARKET {
+    background: #f1c40f;
+    color: black;
+}
+
+.SMITHY {
+    background: #95a5a6;
+}
+
+.STABLE {
+    background: #e67e22;
+}
+
+.WALL {
+    background: #7f8c8d;
+}
+
+.WAREHOUSE {
+    background: #8e44ad;
+}
 
 /* fallback */
 .tile {
     background: #34495e;
+}
+
+.error-box {
+    background: #e74c3c;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 15px auto;
+    width: fit-content;
+    font-weight: bold;
 }

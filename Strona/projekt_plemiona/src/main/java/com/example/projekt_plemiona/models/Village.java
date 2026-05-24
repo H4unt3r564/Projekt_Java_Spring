@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -34,13 +35,26 @@ public class Village {
     @Column(name = "CONTINENT")
     private Integer continent;
 
-    @Column(name = "WOOD")
+    @Column(name = "WOOD", nullable = false)
     private Integer wood;
 
-    @Column(name = "CLAY")
+    @Column(name = "CLAY", nullable = false)
     private Integer clay;
 
-    @Column(name = "IRON")
+    @Column(name = "IRON", nullable=false)
     private Integer iron;
 
+    @Column(name = "LAST_UPDATE", nullable = false)
+    private LocalDateTime lastUpdate;
+
+    @PrePersist
+    public void prePersist() {
+        if (lastUpdate == null) {
+            lastUpdate = LocalDateTime.now();
+        }
+
+        if (wood == null) wood = 0;
+        if (clay == null) clay = 0;
+        if (iron == null) iron = 0;
+    }
 }
