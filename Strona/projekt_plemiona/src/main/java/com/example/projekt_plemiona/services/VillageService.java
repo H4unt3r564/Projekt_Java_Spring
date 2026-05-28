@@ -3,8 +3,10 @@ package com.example.projekt_plemiona.services;
 import com.example.projekt_plemiona.exceptions.NotEnoughResourcesException;
 import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.models.VillageBuilding;
+import com.example.projekt_plemiona.models.VillageUnits;
 import com.example.projekt_plemiona.repositories.VillageBuildingRepository;
 import com.example.projekt_plemiona.repositories.VillageRepository;
+import com.example.projekt_plemiona.repositories.VillageUnitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +16,12 @@ public class VillageService {
 
     private final VillageBuildingRepository villageBuildingRepository;
     private final VillageRepository villageRepository;
+    private final VillageUnitRepository villageUnitRepository;
 
-    public VillageService(VillageRepository villageRepository, VillageBuildingRepository villageBuildingRepository) {
+    public VillageService(VillageRepository villageRepository, VillageBuildingRepository villageBuildingRepository, VillageUnitRepository villageUnitRepository) {
         this.villageRepository = villageRepository;
         this.villageBuildingRepository = villageBuildingRepository;
+        this.villageUnitRepository = villageUnitRepository;
     }
 
     public void upgradeBuilding(Long villageId, Long typeId) {
@@ -63,5 +67,7 @@ public class VillageService {
         return villageBuildingRepository.findByVillage_VillageId(villageId);
     }
 
-
+    public List<VillageUnits> getVillageUnits(Long villageId) {
+        return villageUnitRepository.findByIdVillageId(villageId);
+    }
 }
