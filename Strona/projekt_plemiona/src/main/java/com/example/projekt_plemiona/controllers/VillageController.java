@@ -5,6 +5,7 @@ import com.example.projekt_plemiona.exceptions.UserNotFoundException;
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.models.VillageBuilding;
+import com.example.projekt_plemiona.models.VillageUnits;
 import com.example.projekt_plemiona.repositories.PlayerRepository;
 import com.example.projekt_plemiona.repositories.VillageRepository;
 import com.example.projekt_plemiona.services.ResourceService;
