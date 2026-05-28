@@ -1,0 +1,43 @@
+body{
+    margin:0;
+    overflow:hidden;
+    font-family:Arial;
+}
+
+.world{
+
+    width:100vw;
+    height:100vh;
+
+    overflow:hidden;
+
+    background:#d7f5d7;
+
+    position:relative;
+
+    cursor:grab;
+}
+
+.map{
+
+    position:absolute;
+
+    width:5000px;
+    height:5000px;
+}
+
+.village{
+
+    position:absolute;
+
+    font-size:18px;
+
+    user-select:none;
+
+    transition:0.1s;
+}
+
+.village:hover{
+
+    transform:scale(1.4);
+}

@@ -21,38 +21,83 @@
 <div class="village-grid">
 
     <div th:each="b : ${buildings}"
-         class="tile"
-         th:classappend="${b.buildingType.name.toUpperCase()}">
+         class="tile">
 
         <!-- ICON -->
         <div class="icon">
-            <span th:switch="${b.buildingType.name.toUpperCase()}">
-                <span th:case="'FARM'">🌾</span>
-                <span th:case="'BARRACKS'">🏹</span>
-                <span th:case="'HEADQUARTERS'">🏰</span>
-                <span th:case="'WALL'">🧱</span>
-                <span th:case="'WAREHOUSE'">📦</span>
-                <span th:case="*">🏠</span>
+
+            <span th:if="${b.buildingType.name == 'Lumber Mill'}">
+                🪵
             </span>
+
+            <span th:if="${b.buildingType.name == 'Clay Pit'}">
+                🧱
+            </span>
+
+            <span th:if="${b.buildingType.name == 'Iron Mine'}">
+                ⛓️
+            </span>
+
+            <span th:if="${b.buildingType.name == 'Farm'}">
+                🌾
+            </span>
+
+            <span th:if="${b.buildingType.name == 'Barracks'}">
+                🏹
+            </span>
+
+            <span th:if="${b.buildingType.name == 'Headquarters'}">
+                🏰
+            </span>
+
+            <span th:if="${b.buildingType.name == 'Wall'}">
+                🛡️
+            </span>
+
+            <span th:if="${b.buildingType.name == 'Warehouse'}">
+                📦
+            </span>
+
         </div>
 
         <!-- LEVEL -->
-        <div class="lvl" th:text="'Lv ' + ${b.levelNumber}"></div>
+        <div class="lvl"
+             th:text="'Lv ' + ${b.levelNumber}">
+        </div>
 
         <!-- HOVER MENU -->
         <div class="menu">
 
-            <div class="title" th:text="${b.buildingType.name}"></div>
-            <div th:text="'Level: ' + ${b.levelNumber}"></div>
+            <div class="title"
+                 th:text="${b.buildingType.name}">
+            </div>
 
-            <form th:action="@{/building/upgrade}" method="post">
-                <input type="hidden" name="villageId" th:value="${village.villageId}" />
-                <input type="hidden" name="buildingTypeId" th:value="${b.buildingType.typeId}" />
+            <div th:text="'Level: ' + ${b.levelNumber}">
+            </div>
 
-                <button class="upgrade-btn" type="submit">
-                    Upgrade
-                </button>
-            </form>
+            <div th:if="${isOwner}">
+
+                <form th:action="@{/building/upgrade}"
+                      method="post">
+
+                    <input type="hidden"
+                           name="villageId"
+                           th:value="${village.villageId}" />
+
+                    <input type="hidden"
+                           name="buildingTypeId"
+                           th:value="${b.buildingType.typeId}" />
+
+                    <button class="upgrade-btn"
+                            type="submit">
+
+                        Upgrade
+
+                    </button>
+
+                </form>
+
+            </div>
 
         </div>
 
@@ -72,6 +117,7 @@
 
 <p>Drewno: <span id="wood" th:text="${village.wood}"></span></p>
 <p>Glina: <span id="clay" th:text="${village.clay}"></span></p>
+
 <p>Żelazo: <span id="iron" th:text="${village.iron}"></span></p>
 
 </body>

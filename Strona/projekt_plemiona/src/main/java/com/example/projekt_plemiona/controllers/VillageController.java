@@ -1,12 +1,11 @@
 package com.example.projekt_plemiona.controllers;
 
-import com.example.projekt_plemiona.exceptions.NotEnoughResourcesException;
 import com.example.projekt_plemiona.exceptions.UserNotFoundException;
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.models.VillageBuilding;
-import com.example.projekt_plemiona.models.VillageUnits;
 import com.example.projekt_plemiona.repositories.PlayerRepository;
+import com.example.projekt_plemiona.repositories.VillageBuildingRepository;
 import com.example.projekt_plemiona.repositories.VillageRepository;
 import com.example.projekt_plemiona.services.ResourceService;
 import com.example.projekt_plemiona.services.VillageService;
@@ -26,77 +25,83 @@ public class VillageController {
 
     private final VillageRepository villageRepository;
     private final PlayerRepository playerRepository;
+    private final VillageBuildingRepository villageBuildingRepository;
     private final VillageService villageService;
     private final ResourceService resourceService;
 
     public VillageController(VillageRepository villageRepository,
                              PlayerRepository playerRepository,
                              VillageService villageService,
+                             VillageBuildingRepository villageBuildingRepository,
                              ResourceService resourceService) {
 
         this.villageRepository = villageRepository;
         this.playerRepository = playerRepository;
+        this.villageBuildingRepository = villageBuildingRepository;
         this.villageService = villageService;
         this.resourceService = resourceService;
     }
 
     @GetMapping("/wioska")
-    public String showVillage(Model model) {
+    public String showVillage(
+            @RequestParam(required = false) Long id,
+            Model model) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth =
+                SecurityContextHolder.getContext().getAuthentication();
 
-<<<<<<< Updated upstream
-        if (auth == null || !auth.isAuthenticated() || auth.getName().equals("anonymousUser")) {
-=======
-        if (auth == null || !auth.isAuthenticated() ||
+        if (auth == null ||
+                !auth.isAuthenticated() ||
                 auth.getName().equals("anonymousUser")) {
->>>>>>> Stashed changes
+
             return "redirect:/login";
         }
 
         String username = auth.getName();
 
-        Player player = playerRepository.findByUsername(username)
-<<<<<<< Updated upstream
-                .orElseThrow(() -> new UserNotFoundException("Nie ma takiego gracza"));
-=======
-                .orElseThrow();
->>>>>>> Stashed changes
+        Player loggedPlayer = playerRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new UserNotFoundException("Nie ma takiego gracza"));
 
-        Village village = villageRepository.findByPlayer_PlayerId(player.getPlayerId())
-                .orElse(null);
+        Village village;
 
-<<<<<<< Updated upstream
-
-        List<VillageBuilding> buildings =
-                villageService.getBuildings(village.getVillageId());
-=======
+        // wejście na konkretną wioskę z mapy
         if (id != null) {
+
             village = villageRepository.findById(id)
                     .orElseThrow();
-        } else {
+
+        }
+
+        // domyślna własna wioska
+        else {
+
             village = villageRepository
-                    .findAllByPlayer_PlayerId(player.getPlayerId())
+                    .findAllByPlayer_PlayerId(loggedPlayer.getPlayerId())
                     .stream()
                     .findFirst()
                     .orElseThrow();
         }
 
-        village = resourceService.updateResources(village.getVillageId());
+        // aktualizacja zasobów
+        village = resourceService.updateResources(
+                village.getVillageId()
+        );
+
+        List<VillageBuilding> buildings =
+                villageService.getBuildings(
+                        village.getVillageId()
+                );
 
         Player owner = village.getPlayer();
 
-        boolean isOwner = owner.getUsername().equals(username);
->>>>>>> Stashed changes
+        boolean isOwner =
+                owner.getUsername().equals(username);
 
-        model.addAttribute("player", player);
+        model.addAttribute("player", owner);
         model.addAttribute("village", village);
-<<<<<<< Updated upstream
         model.addAttribute("buildings", buildings);
-=======
-        model.addAttribute("buildings", villageService.getBuildings(village.getVillageId()));
         model.addAttribute("isOwner", isOwner);
->>>>>>> Stashed changes
 
         return "village";
     }
@@ -106,9 +111,6 @@ public class VillageController {
                                   @RequestParam Long buildingTypeId,
                                   RedirectAttributes redirectAttributes) {
 
-<<<<<<< Updated upstream
-        villageService.upgradeBuilding(villageId, buildingTypeId);
-=======
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
 
@@ -119,6 +121,7 @@ public class VillageController {
 
         // zabezpieczenie przed upgradem cudzej wioski
         if (!village.getPlayer().getUsername().equals(username)) {
+
             throw new RuntimeException("To nie twoja wioska");
         }
 
@@ -129,7 +132,7 @@ public class VillageController {
                     buildingTypeId
             );
 
-        } catch (NotEnoughResourcesException e) {
+        } catch (Exception e) {
 
             redirectAttributes.addFlashAttribute(
                     "error",
@@ -138,8 +141,7 @@ public class VillageController {
 
             return "redirect:/wioska?id=" + villageId;
         }
->>>>>>> Stashed changes
 
-        return "redirect:/wioska";
+        return "redirect:/wioska?id=" + villageId;
     }
 }
