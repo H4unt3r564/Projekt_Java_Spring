@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface VillageUnitRepository extends JpaRepository<VillageUnits, VillageUnitsId> {
+public interface VillageUnitRepository
+        extends JpaRepository<VillageUnits, VillageUnitsId> {
 
-    List<VillageUnits> findByIdVillageId(Long villageId);
+    List<VillageUnits> findByVillage_VillageId(Long villageId);
 }

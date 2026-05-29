@@ -1,87 +1,50 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
     <title>Mapa</title>
+
     <link rel="stylesheet" th:href="@{/map.css}">
-
-<!--    <style>-->
-
-<!--        body{-->
-<!--            margin:0;-->
-<!--            overflow:hidden;-->
-<!--            font-family:Arial;-->
-<!--        }-->
-
-<!--        .world{-->
-
-<!--            width:100vw;-->
-<!--            height:100vh;-->
-
-<!--            overflow:hidden;-->
-
-<!--            background:#d7f5d7;-->
-
-<!--            position:relative;-->
-
-<!--            cursor:grab;-->
-<!--        }-->
-
-<!--        .map{-->
-
-<!--            position:absolute;-->
-
-<!--            width:5000px;-->
-<!--            height:5000px;-->
-<!--        }-->
-
-<!--        .village{-->
-
-<!--            position:absolute;-->
-
-<!--            font-size:18px;-->
-
-<!--            user-select:none;-->
-
-<!--            transition:0.1s;-->
-<!--        }-->
-
-<!--        .village:hover{-->
-
-<!--            transform:scale(1.4);-->
-<!--        }-->
-
-<!--    </style>-->
 
 </head>
 
 <body>
 
-<div class="world" id="world">
+<div class="world">
 
     <div class="map" id="map">
+
         <div
-
                 th:each="v : ${villages}"
-
                 class="village"
 
-                th:title="${v.name} + ' (' + ${v.x} + '|' + ${v.y} + ')'"
+                th:attr="data-id=${v.villageID}"
 
-                th:style="'left:' + (${v.x} * 5) + 'px; top:' + (${v.y} * 5) + 'px;'"
+                th:title="${v.name + ' (' + v.x + '|' + v.y + ')'}"
 
-        >
+                th:style="'left:' + (${v.x} * 5) + 'px; top:' + (${v.y} * 5) + 'px;'">
 
             <a th:href="@{/wioska(id=${v.villageID})}">
-
                 🏠
-
             </a>
 
         </div>
 
     </div>
+
+</div>
+
+<div id="contextMenu" class="context-menu">
+
+    <a id="visitLink">
+        🏠 Odwiedź
+    </a>
+
+    <a id="attackLink">
+        ⚔ Atakuj
+    </a>
 
 </div>
 
@@ -101,6 +64,8 @@
         `translate(${offsetX}px, ${offsetY}px)`;
 
     document.addEventListener("mousedown", e => {
+
+        if(e.button !== 0) return;
 
         isDragging = true;
 
@@ -128,7 +93,59 @@
             `translate(${offsetX}px, ${offsetY}px)`;
     });
 
+    const contextMenu =
+        document.getElementById("contextMenu");
+
+    const visitLink =
+        document.getElementById("visitLink");
+
+    const attackLink =
+        document.getElementById("attackLink");
+
+    document.querySelectorAll(".village")
+        .forEach(village => {
+
+            village.addEventListener(
+                "contextmenu",
+                function(e){
+
+                    e.preventDefault();
+
+                    const villageId =
+                        this.dataset.id;
+
+                    contextMenu.style.display =
+                        "block";
+
+                    contextMenu.style.left =
+                        e.pageX + "px";
+
+                    contextMenu.style.top =
+                        e.pageY + "px";
+
+                    visitLink.href =
+                        "/wioska?id=" + villageId;
+
+                    attackLink.href =
+                        "/attack?targetVillageId=" +
+                        villageId;
+                }
+            );
+
+        });
+
+    document.addEventListener(
+        "click",
+        () => {
+
+            contextMenu.style.display =
+                "none";
+        }
+    );
+
 </script>
 
 </body>
+
 </html>
+```

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Attack Village</title>
+    <link rel="stylesheet" th:href="@{/attack.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>⚔ Attack Village ⚔</h1>
+        <p>Choose units to send into battle</p>
+    </div>
+
+    <form th:action="@{/attack}" method="post">
+
+        <input type="hidden"
+               name="sourceVillageId"
+               th:value="${sourceVillageId}">
+
+        <input type="hidden"
+               name="targetVillageId"
+               th:value="${targetVillageId}">
+
+        <div class="units-grid">
+
+            <div class="unit-card"
+                 th:each="unit : ${units}">
+
+                <img class="unit-image"
+                     th:src="@{'/images/units/' + ${unit.unitType.codeName} + '.png'}">
+
+                <h3 th:text="${unit.unitType.codeName}">
+                    Spear
+                </h3>
+
+                <p class="count">
+                    Available:
+                    <span th:text="${unit.amount}"></span>
+                </p>
+
+                <input
+                        type="number"
+                        name="amount"
+                        min="0"
+                        th:max="${unit.amount}"
+                        value="0">
+
+                <input
+                        type="hidden"
+                        name="unitTypeId"
+                        th:value="${unit.unitType.unitTypeId}">
+            </div>
+
+        </div>
+
+        <button class="attack-btn" type="submit">
+            ⚔ SEND ATTACK ⚔
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

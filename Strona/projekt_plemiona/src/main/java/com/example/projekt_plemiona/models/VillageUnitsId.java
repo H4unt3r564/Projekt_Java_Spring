@@ -13,5 +13,5 @@ import lombok.AllArgsConstructor;
 public class VillageUnitsId implements Serializable {
 
     private Long villageId;
-    private int unitTypeId;
+    private Long unitTypeId;
 }

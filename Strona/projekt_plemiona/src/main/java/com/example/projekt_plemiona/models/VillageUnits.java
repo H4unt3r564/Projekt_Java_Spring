@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.projekt_plemiona.models.UnitType;
 
 @Entity
 @Table(name = "VILLAGE_UNITS")
@@ -17,4 +18,16 @@ public class VillageUnits {
 
     @Column(name = "AMOUNT")
     private Long amount;
+
+    @ManyToOne
+    @MapsId("villageId")
+    @JoinColumn(name = "VILLAGE_ID")
+    private Village village;
+
+    @ManyToOne
+    @MapsId("unitTypeId")
+    @JoinColumn(name = "UNIT_TYPE_ID")
+    private UnitType unitType;
+
+
 }

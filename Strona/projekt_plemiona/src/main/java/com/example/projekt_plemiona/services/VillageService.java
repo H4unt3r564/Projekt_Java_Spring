@@ -68,6 +68,14 @@ public class VillageService {
     }
 
     public List<VillageUnits> getVillageUnits(Long villageId) {
-        return villageUnitRepository.findByIdVillageId(villageId);
+        return villageUnitRepository.findByVillage_VillageId(villageId);
+    }
+
+    public Village getPlayerVillage(Long playerId){
+        return villageRepository
+                .findAllByPlayer_PlayerId(playerId)
+                .stream()
+                .findFirst()
+                .orElseThrow();
     }
 }

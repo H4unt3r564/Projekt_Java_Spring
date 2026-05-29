@@ -5,6 +5,8 @@ import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.repositories.PlayerRepository;
 import com.example.projekt_plemiona.repositories.VillageRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Random;
@@ -71,5 +73,17 @@ public class UserService {
             village.setContinent(66);
         }
         villageRepository.save(village);
+    }
+
+    public Player getCurrentPlayer() {
+
+        Authentication auth =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String username = auth.getName();
+
+        return playerRepository
+                .findByUsername(username)
+                .orElseThrow();
     }
 }
