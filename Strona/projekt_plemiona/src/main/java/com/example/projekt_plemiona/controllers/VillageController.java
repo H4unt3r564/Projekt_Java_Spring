@@ -84,8 +84,28 @@ public class VillageController {
         }
 
         // aktualizacja zasobów
-        village = resourceService.updateResources(
+        village = resourceService.snapshotResources(
                 village.getVillageId()
+        );
+
+        model.addAttribute(
+                "woodPerHour",
+                resourceService.getWoodPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "clayPerHour",
+                resourceService.getClayPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "ironPerHour",
+                resourceService.getIronPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "maxStorage",
+                resourceService.getMaxStorage(village.getVillageId())
         );
 
         List<VillageBuilding> buildings =
@@ -116,8 +136,9 @@ public class VillageController {
 
         String username = auth.getName();
 
-        Village village = villageRepository.findById(villageId)
-                .orElseThrow();
+        Village village = resourceService.snapshotResources(villageId);
+
+        
 
         // zabezpieczenie przed upgradem cudzej wioski
         if (!village.getPlayer().getUsername().equals(username)) {

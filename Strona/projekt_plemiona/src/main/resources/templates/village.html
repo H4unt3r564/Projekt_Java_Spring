@@ -115,10 +115,78 @@
 
 <h2>Zasoby</h2>
 
-<p>Drewno: <span id="wood" th:text="${village.wood}"></span></p>
-<p>Glina: <span id="clay" th:text="${village.clay}"></span></p>
+<p>Drewno:
+    <span id="wood"
+          th:text="${village.wood}"
+          th:attr="data-value=${village.wood},
+          data-rate=${woodPerHour ?: 0},
+          data-max=${maxStorage},
+          data-last=${village.lastUpdate}">
+    </span>
+</p>
 
-<p>Żelazo: <span id="iron" th:text="${village.iron}"></span></p>
+<p>Glina:
+    <span id="clay"
+          th:text="${village.clay}"
+          th:attr="data-value=${village.clay},
+          data-rate=${clayPerHour ?: 0},
+          data-max=${maxStorage},
+          data-last=${village.lastUpdate}">
+    </span>
+</p>
 
+<p>Żelazo:
+    <span id="iron"
+          th:text="${village.iron}"
+          th:attr="data-value=${village.iron},
+          data-rate=${woodPerHour ?: 0},
+          data-max=${maxStorage},
+          data-last=${village.lastUpdate}">
+    </span>
+</p>
+
+<script>
+
+    function createResource(id) {
+        const el = document.getElementById(id);
+
+        return {
+            el,
+            value: Number(el.dataset.value),
+            rate: Number(el.dataset.rate),
+            max: Number(el.dataset.max),
+            last: new Date(el.dataset.last).getTime()
+        };
+    }
+
+    function calculate(r) {
+        const now = Date.now();
+        const elapsedSeconds = (now - r.last) / 1000;
+
+        let value = r.value + (r.rate * elapsedSeconds / 3600);
+
+        if (value > r.max) value = r.max;
+
+        return value;
+    }
+
+    function render(r) {
+        r.el.innerText = Math.floor(r.display);
+    }
+
+    const wood = createResource("wood");
+    const clay = createResource("clay");
+    const iron = createResource("iron");
+
+    setInterval(() => {
+
+        [wood, clay, iron].forEach(r => {
+            r.display = calculate(r);
+            render(r);
+        });
+
+    }, 1000);
+
+</script>
 </body>
 </html>

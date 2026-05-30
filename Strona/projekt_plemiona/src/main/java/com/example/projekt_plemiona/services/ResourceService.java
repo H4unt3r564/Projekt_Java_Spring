@@ -24,14 +24,13 @@ public class ResourceService {
     }
 
     @Transactional
-    public Village updateResources(Long villageId) {
+    public Village snapshotResources(Long villageId) {
 
         Village village = villageRepository.findById(villageId)
                 .orElseThrow();
 
         LocalDateTime now = LocalDateTime.now();
 
-        // zabezpieczenie przed null
         if (village.getLastUpdate() == null) {
             village.setLastUpdate(now);
             return villageRepository.save(village);
@@ -55,20 +54,16 @@ public class ResourceService {
 
         for (VillageBuilding b : buildings) {
 
-            String name = b.getBuildingType()
-                    .getName()
-                    .toUpperCase();
-
+            String name = b.getBuildingType().getName().toUpperCase();
             int lvl = b.getLevelNumber();
 
             switch (name) {
-                case "LUMBER MILL" -> woodPerHour += lvl * 30;
-                case "CLAY PIT" -> clayPerHour += lvl * 30;
-                case "IRON MINE" -> ironPerHour += lvl * 30;
+                case "LUMBER MILL" -> woodPerHour += lvl * 100;
+                case "CLAY PIT" -> clayPerHour += lvl * 100;
+                case "IRON MINE" -> ironPerHour += lvl * 100;
             }
         }
 
-        // produkcja
         int woodGain = (int) ((woodPerHour * seconds) / 3600);
         int clayGain = (int) ((clayPerHour * seconds) / 3600);
         int ironGain = (int) ((ironPerHour * seconds) / 3600);
@@ -77,9 +72,9 @@ public class ResourceService {
         village.setClay(village.getClay() + clayGain);
         village.setIron(village.getIron() + ironGain);
 
-        // warehouse limit
+        // warehouse cap
         int warehouseLevel = getWarehouseLevel(buildings);
-        int maxStorage = calculateMaxStorage(warehouseLevel);
+        int maxStorage = 1000 + warehouseLevel * 1000;
 
         village.setWood(Math.min(village.getWood(), maxStorage));
         village.setClay(Math.min(village.getClay(), maxStorage));
@@ -102,5 +97,51 @@ public class ResourceService {
 
     private int calculateMaxStorage(int warehouseLevel) {
         return 1000 + (warehouseLevel * 1000);
+    }
+
+    public int getWoodPerHour(Long villageId) {
+
+        List<VillageBuilding> buildings =
+                buildingRepository.findByVillage_VillageId(villageId);
+
+        return buildings.stream()
+                .filter(b -> b.getBuildingType().getName()
+                        .equalsIgnoreCase("Lumber Mill"))
+                .mapToInt(b -> b.getLevelNumber() * 100)
+                .sum();
+    }
+
+    public int getClayPerHour(Long villageId) {
+
+        List<VillageBuilding> buildings =
+                buildingRepository.findByVillage_VillageId(villageId);
+
+        return buildings.stream()
+                .filter(b -> b.getBuildingType().getName()
+                        .equalsIgnoreCase("Clay Pit"))
+                .mapToInt(b -> b.getLevelNumber() * 100)
+                .sum();
+    }
+
+    public int getIronPerHour(Long villageId) {
+
+        List<VillageBuilding> buildings =
+                buildingRepository.findByVillage_VillageId(villageId);
+
+        return buildings.stream()
+                .filter(b -> b.getBuildingType().getName()
+                        .equalsIgnoreCase("Iron Mine"))
+                .mapToInt(b -> b.getLevelNumber() * 100)
+                .sum();
+    }
+
+    public int getMaxStorage(Long villageId) {
+
+        List<VillageBuilding> buildings =
+                buildingRepository.findByVillage_VillageId(villageId);
+
+        int warehouseLevel = getWarehouseLevel(buildings);
+
+        return calculateMaxStorage(warehouseLevel);
     }
 }
