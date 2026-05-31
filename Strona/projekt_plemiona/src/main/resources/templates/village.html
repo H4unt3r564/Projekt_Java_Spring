@@ -145,6 +145,29 @@
     </span>
 </p>
 
+
+<hr>
+
+<h2>Kolejka budowy</h2>
+
+<table th:if="${!#lists.isEmpty(queue)}">
+    <tr>
+        <th>Budynek</th>
+        <th>Poziom</th>
+        <th>Koniec</th>
+    </tr>
+
+    <tr th:each="q : ${queue}">
+        <td th:text="${q.buildingName}"></td>
+        <td th:text="${q.targetLevel}"></td>
+        <td th:text="${#temporals.format(q.finishTime, 'dd-MM-yyyy HH:mm:ss')}"></td>
+    </tr>
+</table>
+
+<div th:if="${#lists.isEmpty(queue)}">
+    Brak budowy w kolejce
+</div>
+
 <script>
 
     function createResource(id) {
