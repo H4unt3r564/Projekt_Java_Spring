@@ -1,7 +1,7 @@
 body{
     margin:0;
     overflow:hidden;
-    font-family:Arial;
+    font-family:Georgia, serif;
 }
 
 .world{
@@ -11,7 +11,12 @@ body{
 
     overflow:hidden;
 
-    background:#d7f5d7;
+    background:
+            linear-gradient(
+                    rgba(255,255,255,0.15),
+                    rgba(255,255,255,0.15)
+            ),
+            #9ed58f;
 
     position:relative;
 
@@ -30,14 +35,82 @@ body{
 
     position:absolute;
 
-    font-size:18px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 
     user-select:none;
 
-    transition:0.1s;
+    transition:0.15s;
 }
 
 .village:hover{
 
-    transform:scale(1.4);
+    transform:scale(1.2);
+}
+
+.village a{
+
+    text-decoration:none;
+
+    font-size:26px;
+}
+
+.owner{
+
+    margin-top:2px;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    color:#111;
+
+    text-shadow:
+            1px 1px 2px white;
+}
+
+.context-menu{
+
+    display:none;
+
+    position:absolute;
+
+    background:#ead8b0;
+
+    border:2px solid #6d4c2f;
+
+    border-radius:8px;
+
+    min-width:160px;
+
+    z-index:9999;
+
+    box-shadow:
+            0 4px 12px rgba(0,0,0,0.35);
+}
+
+.context-menu a{
+
+    display:block;
+
+    padding:12px;
+
+    text-decoration:none;
+
+    color:black;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+.context-menu a:hover{
+
+    background:#d6bf95;
+}
+
+.context-menu a:first-child{
+
+    border-bottom:1px solid #b28b5c;
 }
