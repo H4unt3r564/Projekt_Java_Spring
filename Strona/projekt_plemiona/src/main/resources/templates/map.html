@@ -20,16 +20,18 @@
                 th:each="v : ${villages}"
                 class="village"
 
-                th:attr="data-id=${v.villageID}"
+                th:attr="data-id=${v.villageId}"
 
-                th:title="${v.name + ' (' + v.x + '|' + v.y + ')'}"
+                th:title="${v.name + ' (' + v.coordinateX + '|' + v.coordinateY + ')'}"
 
-                th:style="'left:' + (${v.x} * 5) + 'px; top:' + (${v.y} * 5) + 'px;'">
+                th:style="'left:' + (${v.coordinateX} * 5) + 'px; top:' + (${v.coordinateY} * 5) + 'px;'">
 
-            <a th:href="@{/wioska(id=${v.villageID})}">
+            <a th:href="@{/wioska(id=${v.villageId})}">
                 🏠
             </a>
-
+            <span class="owner"
+                  th:text="${v.player.username}">
+            </span>
         </div>
 
     </div>
