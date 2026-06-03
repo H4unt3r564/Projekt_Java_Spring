@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class AttackController {
 
@@ -31,8 +33,8 @@ public class AttackController {
 
             @RequestParam Long sourceVillageId,
             @RequestParam Long targetVillageId,
-            @RequestParam Long unitTypeId,
-            @RequestParam int amount
+            @RequestParam List<Long> unitTypeId,
+            @RequestParam List<Integer> amount
 
     ) {
 
@@ -78,14 +80,7 @@ public class AttackController {
         model.addAttribute("sourceVillageId", SourceVillage.getVillageId());
         model.addAttribute("targetVillageId", targetVillageId);
 
-        var units = villageService.getVillageUnits(
-                SourceVillage.getVillageId()
-        );
 
-        System.out.println("VILLAGE = " + SourceVillage.getVillageId());
-        System.out.println("UNITS = " + units.size());
-
-        model.addAttribute("units", units);
         return "attack";
     }
 }
