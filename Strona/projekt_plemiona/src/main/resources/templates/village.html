@@ -198,31 +198,31 @@
 
 <hr>
 
-<h2>Kolejka budowy</h2>
+<!--<h2>Kolejka budowy</h2>-->
 
-<div th:if="${#maps.isEmpty(queue)}">
-    Brak budowy w kolejce
-</div>
+<!--<div th:if="${#maps.isEmpty(queue)}">-->
+<!--    Brak budowy w kolejce-->
+<!--</div>-->
 
-<div th:each="entry : ${queue}">
+<!--<div th:each="entry : ${queue}">-->
 
-    <h3 th:text="${entry.key}"></h3>
+<!--    <h3 th:text="${entry.key}"></h3>-->
 
-    <table>
-        <tr>
-            <th>Budynek</th>
-            <th>Poziom</th>
-            <th>Koniec</th>
-        </tr>
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <th>Budynek</th>-->
+<!--            <th>Poziom</th>-->
+<!--            <th>Koniec</th>-->
+<!--        </tr>-->
 
-        <tr th:each="q : ${entry.value}">
-            <td th:text="${entry.key}"></td>
-            <td th:text="${q.targetLevel}"></td>
-            <td th:text="${#temporals.format(q.finishTime, 'dd-MM-yyyy HH:mm:ss')}"></td>
-        </tr>
-    </table>
+<!--        <tr th:each="q : ${entry.value}">-->
+<!--            <td th:text="${entry.key}"></td>-->
+<!--            <td th:text="${q.targetLevel}"></td>-->
+<!--            <td th:text="${#temporals.format(q.finishTime, 'dd-MM-yyyy HH:mm:ss')}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
 
-</div>
+<!--</div>-->
 
 </body>
 </html>
