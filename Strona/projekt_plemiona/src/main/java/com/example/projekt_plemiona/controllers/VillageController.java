@@ -1,6 +1,7 @@
 package com.example.projekt_plemiona.controllers;
 
 import com.example.projekt_plemiona.exceptions.UserNotFoundException;
+import com.example.projekt_plemiona.models.BuildingQueue;
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.models.VillageBuilding;
@@ -21,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class VillageController {
@@ -128,30 +131,12 @@ public class VillageController {
         model.addAttribute("buildings", buildings);
         model.addAttribute("isOwner", isOwner);
 
-        model.addAttribute(
-                "queue",
-                buildingQueueRepository.findAllByVillageIdOrderByFinishTimeAsc(
-                        village.getVillageId()
-                ).stream().map(q -> {
+        Map<Long, List<BuildingQueue>> finishTimes = buildingQueueRepository
+                .findAllByVillageIdOrderByFinishTimeAsc(village.getVillageId())
+                .stream()
+                .collect(Collectors.groupingBy(q -> q.getTypeId().longValue()));
 
-                    String name = villageBuildingRepository
-                            .findByVillage_VillageIdAndBuildingType_TypeId(
-                                    q.getVillageId(),
-                                    q.getTypeId()
-                            )
-                            .map(b -> b.getBuildingType().getName())
-                            .orElse("Unknown");
-
-                    q.setTypeId(q.getTypeId()); // nic nie zmienia — tylko stabilność
-
-                    return new Object() {
-                        public final String buildingName = name;
-                        public final Integer targetLevel = q.getTargetLevel();
-                        public final LocalDateTime finishTime = q.getFinishTime();
-                    };
-                }).toList()
-        );
-
+        model.addAttribute("finishTimes", finishTimes);
         return "village";
     }
 

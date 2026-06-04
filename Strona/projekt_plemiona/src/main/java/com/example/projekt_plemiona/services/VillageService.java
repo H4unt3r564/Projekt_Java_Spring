@@ -55,7 +55,6 @@ public class VillageService {
         int currentLevel = building.getLevelNumber();
         int targetLevel = currentLevel + 1;
 
-        // ❗ KOSZT = TWOJA STARA LOGIKA (BEZ ZMIAN)
         int costWood = (int) (100 * Math.pow(1.25, currentLevel));
         int costClay = (int) (80 * Math.pow(1.25, currentLevel));
         int costIron = (int) (60 * Math.pow(1.25, currentLevel));
