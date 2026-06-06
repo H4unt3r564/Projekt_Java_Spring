@@ -3,22 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Rejestracja</title>
+    <link rel="stylesheet" th:href="@{/css/rejestracja.css}">
 </head>
 <body>
-    <form method="post" action="">
-        <label for="email">Email:</label>
-        <input type="text" name="email" id="email" required>
-        <br/>
+    <div id="container">
 
-        <label for="username">Login:</label>
-        <input type="text" name="username" id="username" required>
-        <br/>
+        <div id="header">
+            <span>PLEMIONA</span>
+            <br/>
+            <span>Witaj w świecie średniowiecznych wojen!</span>
+        </div>
 
-        <label for="password">Hasło:</label>
-        <input type="password" name="password" id="password" required>
-        <br/>
+        <form method="post" action="">
+            <label for="email">Email:</label>
+            <input type="text" name="email" id="email" required>
+            <br/>
 
-        <button type="submit">Zarejestruj</button>
-    </form>
+            <label for="username">Login:</label>
+            <input type="text" name="username" id="username" required>
+            <br/>
+
+            <label for="password">Hasło:</label>
+            <input type="password" name="password" id="password" required>
+            <br/>
+
+            <div id="buttons">
+                <button type="submit">Zarejestruj</button>
+                <a class="btn" th:href="@{/login}">Logowanie</a>
+            </div>
+
+        </form>
+
+
+    </div>
+
 </body>
 </html>
