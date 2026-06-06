@@ -1,0 +1,15 @@
+<form
+        th:if="${#strings.contains(report.contentJson,'STATUS=PENDING')}"
+        th:action="@{/trade/accept}"
+        method="post">
+
+    <input
+            type="hidden"
+            name="reportId"
+            th:value="${report.reportId}">
+
+    <button type="submit">
+        Accept
+    </button>
+
+</form>

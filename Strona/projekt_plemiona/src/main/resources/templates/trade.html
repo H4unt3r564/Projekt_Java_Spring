@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trade</title>
+</head>
+<body>
+
+<h1>Trade</h1>
+
+<form th:action="@{/trade/send}" method="post">
+
+    <input type="hidden"
+           name="receiverId"
+           th:value="${receiverId}">
+
+    <h3>Resources</h3>
+
+    Wood:
+    <input type="number"
+           name="wood"
+           value="0">
+
+    <br>
+
+    Clay:
+    <input type="number"
+           name="clay"
+           value="0">
+
+    <br>
+
+    Iron:
+    <input type="number"
+           name="iron"
+           value="0">
+
+    <br><br>
+
+    <h3>Units</h3>
+
+    Spear:
+    <input type="number"
+           name="spear"
+           value="0">
+
+    <br>
+
+    Sword:
+    <input type="number"
+           name="sword"
+           value="0">
+
+    <br>
+
+    Axe:
+    <input type="number"
+           name="axe"
+           value="0">
+
+    <br><br>
+
+    <button type="submit">
+        Send Trade
+    </button>
+
+</form>
+
+</body>
+</html>

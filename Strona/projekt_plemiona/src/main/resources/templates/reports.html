@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reports</title>
+</head>
+<body>
+
+<h1>Reports</h1>
+
+<div th:each="report : ${reports}">
+
+    <hr>
+
+    <p>
+        <b>Type:</b>
+        <span th:text="${report.type}"></span>
+    </p>
+
+    <p th:text="${report.contentJson}">
+    </p>
+
+    <form
+            th:if="${#strings.contains(report.contentJson,'STATUS=PENDING')}"
+            action="/trade/accept"
+            method="post">
+
+        <input
+                type="hidden"
+                name="reportId"
+                th:value="${report.reportId}">
+
+        <button type="submit">
+            Accept
+        </button>
+
+    </form>
+
+    <form
+            th:if="${#strings.contains(report.contentJson,'STATUS=PENDING')}"
+            action="/trade/reject"
+            method="post">
+
+        <input
+                type="hidden"
+                name="reportId"
+                th:value="${report.reportId}">
+
+        <button type="submit">
+            Reject
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
