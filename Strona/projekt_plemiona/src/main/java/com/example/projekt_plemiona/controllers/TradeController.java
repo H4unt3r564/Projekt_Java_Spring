@@ -1,7 +1,6 @@
 package com.example.projekt_plemiona.controllers;
 
 import com.example.projekt_plemiona.models.Player;
-import com.example.projekt_plemiona.models.Report;
 import com.example.projekt_plemiona.repositories.ReportRepository;
 import com.example.projekt_plemiona.services.TradeService;
 import com.example.projekt_plemiona.services.UserService;
@@ -15,7 +14,6 @@ public class TradeController {
     private final ReportRepository reportRepository;
     private final UserService userService;
     private final TradeService tradeService;
-
 
     public TradeController(
             ReportRepository reportRepository,
@@ -46,13 +44,29 @@ public class TradeController {
 
             @RequestParam Long receiverId,
 
-            @RequestParam Integer wood,
-            @RequestParam Integer clay,
-            @RequestParam Integer iron,
+            @RequestParam Integer offerWood,
+            @RequestParam Integer offerClay,
+            @RequestParam Integer offerIron,
+            @RequestParam Integer offerSpear,
+            @RequestParam Integer offerSword,
+            @RequestParam Integer offerAxe,
+            @RequestParam Integer offerArcher,
+            @RequestParam Integer offerLight,
+            @RequestParam Integer offerHeavy,
+            @RequestParam Integer offerRam,
+            @RequestParam Integer offerCatapult,
 
-            @RequestParam Integer spear,
-            @RequestParam Integer sword,
-            @RequestParam Integer axe
+            @RequestParam Integer requestWood,
+            @RequestParam Integer requestClay,
+            @RequestParam Integer requestIron,
+            @RequestParam Integer requestSpear,
+            @RequestParam Integer requestSword,
+            @RequestParam Integer requestAxe,
+            @RequestParam Integer requestArcher,
+            @RequestParam Integer requestLight,
+            @RequestParam Integer requestHeavy,
+            @RequestParam Integer requestRam,
+            @RequestParam Integer requestCatapult
 
     ) {
 
@@ -64,24 +78,32 @@ public class TradeController {
                 sender,
                 receiverId,
 
-                wood,
-                clay,
-                iron,
+                offerWood,
+                offerClay,
+                offerIron,
+                offerSpear,
+                offerSword,
+                offerAxe,
+                offerArcher,
+                offerLight,
+                offerHeavy,
+                offerRam,
+                offerCatapult,
 
-                spear,
-                sword,
-                axe,
-
-                0,
-                0,
-                0,
-                0,
-                0
-        );
+                requestWood,
+                requestClay,
+                requestIron,
+                requestSpear,
+                requestSword,
+                requestAxe,
+                requestArcher,
+                requestLight,
+                requestHeavy,
+                requestRam,
+                requestCatapult
+                );
 
         return "redirect:/reports";
-
-
     }
 
     @PostMapping("/trade/accept")
@@ -118,25 +140,12 @@ public class TradeController {
         Player player =
                 userService.getCurrentPlayer();
 
-        System.out.println(
-                "CURRENT PLAYER = "
-                        + player.getPlayerId()
-        );
-
-        var reports =
+        model.addAttribute(
+                "reports",
                 reportRepository
                         .findByPlayerIdOrderByReportIdDesc(
                                 player.getPlayerId()
-                        );
-
-        System.out.println(
-                "REPORTS FOUND = "
-                        + reports.size()
-        );
-
-        model.addAttribute(
-                "reports",
-                reports
+                        )
         );
 
         return "reports";

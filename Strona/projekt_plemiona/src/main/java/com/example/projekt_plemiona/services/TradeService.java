@@ -39,18 +39,31 @@ public class TradeService {
             Player sender,
             Long receiverId,
 
-            Integer wood,
-            Integer clay,
-            Integer iron,
+            Integer offerWood,
+            Integer offerClay,
+            Integer offerIron,
 
-            Integer spear,
-            Integer sword,
-            Integer axe,
-            Integer archer,
-            Integer light,
-            Integer heavy,
-            Integer ram,
-            Integer catapult
+            Integer offerSpear,
+            Integer offerSword,
+            Integer offerAxe,
+            Integer offerArcher,
+            Integer offerLight,
+            Integer offerHeavy,
+            Integer offerRam,
+            Integer offerCatapult,
+
+            Integer requestWood,
+            Integer requestClay,
+            Integer requestIron,
+
+            Integer requestSpear,
+            Integer requestSword,
+            Integer requestAxe,
+            Integer requestArcher,
+            Integer requestLight,
+            Integer requestHeavy,
+            Integer requestRam,
+            Integer requestCatapult
 
     ) {
 
@@ -65,23 +78,23 @@ public class TradeService {
 
         checkResources(
                 senderVillage,
-                wood,
-                clay,
-                iron
+                offerWood,
+                offerClay,
+                offerIron
+
         );
 
         senderVillage.setWood(
-                senderVillage.getWood() - wood
+                senderVillage.getWood() - offerWood
         );
 
         senderVillage.setClay(
-                senderVillage.getClay() - clay
+                senderVillage.getClay() - offerClay
         );
 
         senderVillage.setIron(
-                senderVillage.getIron() - iron
+                senderVillage.getIron() - offerIron
         );
-
         villageRepository.save(
                 senderVillage
         );
@@ -92,14 +105,14 @@ public class TradeService {
                                 senderVillage.getVillageId()
                         );
 
-        removeUnits(units, 1L, spear);
-        removeUnits(units, 2L, sword);
-        removeUnits(units, 3L, axe);
-        removeUnits(units, 4L, archer);
-        removeUnits(units, 5L, light);
-        removeUnits(units, 6L, heavy);
-        removeUnits(units, 7L, ram);
-        removeUnits(units, 8L, catapult);
+        removeUnits(units, 1L, offerSpear);
+        removeUnits(units, 2L, offerSword);
+        removeUnits(units, 3L, offerAxe);
+        removeUnits(units, 4L, offerArcher);
+        removeUnits(units, 5L, offerLight);
+        removeUnits(units, 6L, offerHeavy);
+        removeUnits(units, 7L, offerRam);
+        removeUnits(units, 8L, offerCatapult);
 
         villageUnitRepository.saveAll(
                 units
@@ -122,21 +135,35 @@ public class TradeService {
 
                         + ";VILLAGE=" + senderVillage.getVillageId()
 
-                        + ";WOOD=" + wood
-                        + ";CLAY=" + clay
-                        + ";IRON=" + iron
+                        + ";OFFER_WOOD=" + offerWood
+                        + ";OFFER_CLAY=" + offerClay
+                        + ";OFFER_IRON=" + offerIron
 
-                        + ";SPEAR=" + spear
-                        + ";SWORD=" + sword
-                        + ";AXE=" + axe
-                        + ";ARCHER=" + archer
+                        + ";OFFER_SPEAR=" + offerSpear
+                        + ";OFFER_SWORD=" + offerSword
+                        + ";OFFER_AXE=" + offerAxe
+                        + ";OFFER_ARCHER=" + offerArcher
 
-                        + ";LIGHT=" + light
-                        + ";HEAVY=" + heavy
+                        + ";OFFER_LIGHT=" + offerLight
+                        + ";OFFER_HEAVY=" + offerHeavy
 
-                        + ";RAM=" + ram
-                        + ";CATAPULT=" + catapult
+                        + ";OFFER_RAM=" + offerRam
+                        + ";OFFER_CATAPULT=" + offerCatapult
 
+                        + ";REQUEST_WOOD=" + requestWood
+                        + ";REQUEST_CLAY=" + requestClay
+                        + ";REQUEST_IRON=" + requestIron
+
+                        + ";REQUEST_SPEAR=" + requestSpear
+                        + ";REQUEST_SWORD=" + requestSword
+                        + ";REQUEST_AXE=" + requestAxe
+                        + ";REQUEST_ARCHER=" + requestArcher
+
+                        + ";REQUEST_LIGHT=" + requestLight
+                        + ";REQUEST_HEAVY=" + requestHeavy
+
+                        + ";REQUEST_RAM=" + requestRam
+                        + ";REQUEST_CATAPULT=" + requestCatapult
                         + ";STATUS=PENDING"
         );
 
@@ -202,6 +229,7 @@ public class TradeService {
         );
     }
 
+
     @Transactional
     public void acceptOffer(
             Long reportId,
@@ -218,37 +246,50 @@ public class TradeService {
 
 
 
-        Integer wood = getInt(content, "WOOD");
+        Integer offerWood = getInt(content, "OFFER_WOOD");
+        Integer offerClay = getInt(content, "OFFER_CLAY");
+        Integer offerIron = getInt(content, "OFFER_IRON");
 
-        System.out.println(
-                "RECEIVER PLAYER = "
-                        + receiver.getPlayerId()
-        );
+        Integer requestWood = getInt(content, "REQUEST_WOOD");
+        Integer requestClay = getInt(content, "REQUEST_CLAY");
+        Integer requestIron = getInt(content, "REQUEST_IRON");
 
-        System.out.println(
-                "REPORT CONTENT = "
-                        + content
-        );
+        Integer offerSpear = getInt(content, "OFFER_SPEAR");
+        Integer offerSword = getInt(content, "OFFER_SWORD");
+        Integer offerAxe = getInt(content, "OFFER_AXE");
+        Integer offerArcher = getInt(content, "OFFER_ARCHER");
+        Integer offerLight = getInt(content, "OFFER_LIGHT");
+        Integer offerHeavy = getInt(content, "OFFER_HEAVY");
+        Integer offerRam = getInt(content, "OFFER_RAM");
+        Integer offerCatapult = getInt(content, "OFFER_CATAPULT");
 
-        System.out.println(
-                "WOOD FROM REPORT = "
-                        + wood
-        );
-        Integer clay = getInt(content, "CLAY");
-        Integer iron = getInt(content, "IRON");
+        Integer requestSpear = getInt(content, "REQUEST_SPEAR");
+        Integer requestSword = getInt(content, "REQUEST_SWORD");
+        Integer requestAxe = getInt(content, "REQUEST_AXE");
+        Integer requestArcher = getInt(content, "REQUEST_ARCHER");
+        Integer requestLight = getInt(content, "REQUEST_LIGHT");
+        Integer requestHeavy = getInt(content, "REQUEST_HEAVY");
+        Integer requestRam = getInt(content, "REQUEST_RAM");
+        Integer requestCatapult = getInt(content, "REQUEST_CATAPULT");
 
-        Integer spear = getInt(content, "SPEAR");
-        Integer sword = getInt(content, "SWORD");
-        Integer axe = getInt(content, "AXE");
-        Integer archer = getInt(content, "ARCHER");
+        Long senderId =
+                getLong(content, "SENDER");
 
-        Integer light = getInt(content, "LIGHT");
-        Integer heavy = getInt(content, "HEAVY");
+        Player sender =
+                playerRepository
+                        .findById(senderId)
+                        .orElseThrow();
 
-        Integer ram = getInt(content, "RAM");
-        Integer catapult = getInt(content, "CATAPULT");
+        Village senderVillage =
+                villageRepository
+                        .findAllByPlayer_PlayerId(
+                                sender.getPlayerId()
+                        )
+                        .stream()
+                        .findFirst()
+                        .orElseThrow();
 
-        Village village =
+        Village receiverVillage =
                 villageRepository
                         .findAllByPlayer_PlayerId(
                                 receiver.getPlayerId()
@@ -257,51 +298,85 @@ public class TradeService {
                         .findFirst()
                         .orElseThrow();
 
-        System.out.println(
-                "VILLAGE ID = "
-                        + village.getVillageId()
+        checkResources(
+                receiverVillage,
+                requestWood,
+                requestClay,
+                requestIron
         );
 
-        System.out.println(
-                "WOOD BEFORE = "
-                        + village.getWood()
+        List<VillageUnits> receiverUnits =
+                villageUnitRepository.findByVillage_VillageId(
+                        receiverVillage.getVillageId()
+                );
+
+        removeUnits(receiverUnits, 1L, requestSpear);
+        removeUnits(receiverUnits, 2L, requestSword);
+        removeUnits(receiverUnits, 3L, requestAxe);
+        removeUnits(receiverUnits, 4L, requestArcher);
+        removeUnits(receiverUnits, 5L, requestLight);
+        removeUnits(receiverUnits, 6L, requestHeavy);
+        removeUnits(receiverUnits, 7L, requestRam);
+        removeUnits(receiverUnits, 8L, requestCatapult);
+
+        senderVillage.setWood(
+                senderVillage.getWood() + requestWood
         );
 
-        village.setWood(
-                village.getWood() + wood
+        senderVillage.setClay(
+                senderVillage.getClay() + requestClay
         );
 
-        System.out.println(
-                "WOOD AFTER = "
-                        + village.getWood()
+        senderVillage.setIron(
+                senderVillage.getIron() + requestIron
         );
 
-        village.setClay(
-                village.getClay() + clay
+        receiverVillage.setWood(
+                receiverVillage.getWood()
+                        - requestWood
+                        + offerWood
         );
 
-        village.setIron(
-                village.getIron() + iron
+        receiverVillage.setClay(
+                receiverVillage.getClay()
+                        - requestClay
+                        + offerClay
         );
 
-        villageRepository.save(village);
+        receiverVillage.setIron(
+                receiverVillage.getIron()
+                        - requestIron
+                        + offerIron
+        );
 
-        List<VillageUnits> units =
-                villageUnitRepository
-                        .findByVillage_VillageId(
-                                village.getVillageId()
-                        );
+        villageRepository.save(senderVillage);
+        villageRepository.save(receiverVillage);
 
-        addUnits(units, 1L, spear);
-        addUnits(units, 2L, sword);
-        addUnits(units, 3L, axe);
-        addUnits(units, 4L, archer);
-        addUnits(units, 5L, light);
-        addUnits(units, 6L, heavy);
-        addUnits(units, 7L, ram);
-        addUnits(units, 8L, catapult);
+        List<VillageUnits> senderUnits =
+                villageUnitRepository.findByVillage_VillageId(
+                        senderVillage.getVillageId()
+                );
 
-        villageUnitRepository.saveAll(units);
+        addUnits(senderUnits, 1L, requestSpear);
+        addUnits(senderUnits, 2L, requestSword);
+        addUnits(senderUnits, 3L, requestAxe);
+        addUnits(senderUnits, 4L, requestArcher);
+        addUnits(senderUnits, 5L, requestLight);
+        addUnits(senderUnits, 6L, requestHeavy);
+        addUnits(senderUnits, 7L, requestRam);
+        addUnits(senderUnits, 8L, requestCatapult);
+
+        addUnits(receiverUnits, 1L, offerSpear);
+        addUnits(receiverUnits, 2L, offerSword);
+        addUnits(receiverUnits, 3L, offerAxe);
+        addUnits(receiverUnits, 4L, offerArcher);
+        addUnits(receiverUnits, 5L, offerLight);
+        addUnits(receiverUnits, 6L, offerHeavy);
+        addUnits(receiverUnits, 7L, offerRam);
+        addUnits(receiverUnits, 8L, offerCatapult);
+
+        villageUnitRepository.saveAll(senderUnits);
+        villageUnitRepository.saveAll(receiverUnits);
 
         report.setContentJson(
                 content.replace(
@@ -326,23 +401,25 @@ public class TradeService {
         String content =
                 report.getContentJson();
 
+
+
         Long villageId =
                 getLong(content, "VILLAGE");
 
-        Integer wood = getInt(content, "WOOD");
-        Integer clay = getInt(content, "CLAY");
-        Integer iron = getInt(content, "IRON");
+        Integer wood = getInt(content, "OFFER_WOOD");
+        Integer clay = getInt(content, "OFFER_CLAY");
+        Integer iron = getInt(content, "OFFER_IRON");
 
-        Integer spear = getInt(content, "SPEAR");
-        Integer sword = getInt(content, "SWORD");
-        Integer axe = getInt(content, "AXE");
-        Integer archer = getInt(content, "ARCHER");
+        Integer spear = getInt(content, "OFFER_SPEAR");
+        Integer sword = getInt(content, "OFFER_SWORD");
+        Integer axe = getInt(content, "OFFER_AXE");
+        Integer archer = getInt(content, "OFFER_ARCHER");
 
-        Integer light = getInt(content, "LIGHT");
-        Integer heavy = getInt(content, "HEAVY");
+        Integer light = getInt(content, "OFFER_LIGHT");
+        Integer heavy = getInt(content, "OFFER_HEAVY");
 
-        Integer ram = getInt(content, "RAM");
-        Integer catapult = getInt(content, "CATAPULT");
+        Integer ram = getInt(content, "OFFER_RAM");
+        Integer catapult = getInt(content, "OFFER_CATAPULT");
 
         Village village =
                 villageRepository
@@ -363,10 +440,7 @@ public class TradeService {
                 village.getIron() + iron
         );
 
-        System.out.println(
-                "SAVING VILLAGE = "
-                        + village.getVillageId()
-        );
+
 
         villageRepository.save(village);
 
@@ -377,10 +451,7 @@ public class TradeService {
                         )
                         .orElseThrow();
 
-        System.out.println(
-                "WOOD AFTER SAVE = "
-                        + check.getWood()
-        );
+
 
         List<VillageUnits> units =
                 villageUnitRepository

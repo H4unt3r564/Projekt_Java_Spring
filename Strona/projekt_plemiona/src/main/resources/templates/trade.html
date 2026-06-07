@@ -1,69 +1,45 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Trade</title>
-</head>
-<body>
-
-<h1>Trade</h1>
-
-<form th:action="@{/trade/send}" method="post">
+<form action="/trade/send" method="post">
 
     <input type="hidden"
            name="receiverId"
            th:value="${receiverId}">
 
-    <h3>Resources</h3>
+    <h2>I offer</h2>
 
-    Wood:
-    <input type="number"
-           name="wood"
-           value="0">
+    <input type="number" name="offerWood" value="0">offerWood
+    <input type="number" name="offerClay" value="0">offerClay
+    <input type="number" name="offerIron" value="0">offerIron
 
-    <br>
+    <input type="number" name="offerSpear" value="0">offerSpear
+    <input type="number" name="offerSword" value="0">offerSword
+    <input type="number" name="offerAxe" value="0">offerAxe
+    <input type="number" name="offerArcher" value="0">offerArcher
 
-    Clay:
-    <input type="number"
-           name="clay"
-           value="0">
+    <input type="number" name="offerLight" value="0">offerLight
+    <input type="number" name="offerHeavy" value="0">
 
-    <br>
+    <input type="number" name="offerRam" value="0">
+    <input type="number" name="offerCatapult" value="0">
 
-    Iron:
-    <input type="number"
-           name="iron"
-           value="0">
+    <h2>I want</h2>
 
-    <br><br>
+    <input type="number" name="requestWood" value="0">
+    <input type="number" name="requestClay" value="0">
+    <input type="number" name="requestIron" value="0">
 
-    <h3>Units</h3>
+    <input type="number" name="requestSpear" value="0">
+    <input type="number" name="requestSword" value="0">
+    <input type="number" name="requestAxe" value="0">
+    <input type="number" name="requestArcher" value="0">
 
-    Spear:
-    <input type="number"
-           name="spear"
-           value="0">
+    <input type="number" name="requestLight" value="0">
+    <input type="number" name="requestHeavy" value="0">
 
-    <br>
-
-    Sword:
-    <input type="number"
-           name="sword"
-           value="0">
-
-    <br>
-
-    Axe:
-    <input type="number"
-           name="axe"
-           value="0">
-
-    <br><br>
+    <input type="number" name="requestRam" value="0">
+    <input type="number" name="requestCatapult" value="0">
 
     <button type="submit">
-        Send Trade
+        Send offer
     </button>
 
 </form>
-
-</body>
-</html>
