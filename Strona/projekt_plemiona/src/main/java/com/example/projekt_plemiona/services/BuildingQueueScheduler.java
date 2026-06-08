@@ -23,7 +23,7 @@ public class BuildingQueueScheduler {
         this.villageBuildingRepository = villageBuildingRepository;
     }
 
-    @Scheduled(fixedRate = 2000)
+    @Scheduled(fixedRate = 20000)
     @Transactional
     public void processQueue() {
 

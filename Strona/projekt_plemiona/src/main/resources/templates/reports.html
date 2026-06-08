@@ -20,7 +20,8 @@
     </p>
 
     <form
-            th:if="${#strings.contains(report.contentJson,'STATUS=PENDING')}"
+            th:if="${report.type == 'TRADE_OFFER'
+                and #strings.contains(report.contentJson,'STATUS=PENDING')}"
             action="/trade/accept"
             method="post">
 
@@ -36,7 +37,8 @@
     </form>
 
     <form
-            th:if="${#strings.contains(report.contentJson,'STATUS=PENDING')}"
+            th:if="${report.type == 'TRADE_OFFER'
+                and #strings.contains(report.contentJson,'STATUS=PENDING')}"
             action="/trade/reject"
             method="post">
 
@@ -50,7 +52,6 @@
         </button>
 
     </form>
-
 </div>
 
 </body>

@@ -170,6 +170,24 @@ public class TradeService {
         reportRepository.save(
                 report
         );
+
+        Report senderReport = new Report();
+
+        senderReport.setPlayerId(
+                sender.getPlayerId()
+        );
+
+        senderReport.setType(
+                "TRADE_SENT"
+        );
+
+        senderReport.setContentJson(
+                report.getContentJson()
+        );
+
+        reportRepository.save(
+                senderReport
+        );
     }
 
     private void checkResources(
@@ -386,6 +404,9 @@ public class TradeService {
         );
 
         reportRepository.save(report);
+
+
+
     }
 
     @Transactional
@@ -478,6 +499,8 @@ public class TradeService {
         );
 
         reportRepository.save(report);
+
+
     }
 
     private void addUnits(
