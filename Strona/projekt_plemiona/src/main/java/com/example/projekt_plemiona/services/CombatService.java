@@ -148,19 +148,21 @@ public class CombatService {
 
         if (attackPower > defensePower) {
 
-            long appdef = applyDefenderLosses(
-                    defVillage,
-                    lossRate,
-                    true
-            );
+            String attackerLosses =
+                    applyAttackerLosses(
+                            attackVillage,
+                            unitTypeId,
+                            amount,
+                            lossRate,
+                            false
+                    );
 
-            long appat = applyAttackerLosses(
-                    attackVillage,
-                    unitTypeId,
-                    amount,
-                    lossRate,
-                    true
-            );
+            String defenderLosses =
+                    applyDefenderLosses(
+                            defVillage,
+                            lossRate,
+                            true
+                    );
 
 
 
@@ -173,8 +175,8 @@ public class CombatService {
                             + "TARGET=" + targetVillageId
                             + ";ATTACK=" + attackPower
                             + ";DEFENSE=" + defensePower
-                            + ";ATTACKER_LOSSES=" + appat
-                            + ";DEFENDER_LOSSES=" + appdef
+                            + ";ATTACKER_LOSSES=" + attackerLosses
+                            + ";DEFENDER_LOSSES=" + defenderLosses
             );
 
             Report defenderReport = new Report();
@@ -186,8 +188,8 @@ public class CombatService {
                             + "SOURCE=" + sourceVillageId
                             + ";ATTACK=" + attackPower
                             + ";DEFENSE=" + defensePower
-                            + ";ATTACKER_LOSSES=" + appat
-                            + ";DEFENDER_LOSSES=" + appdef
+                            + ";ATTACKER_LOSSES=" + attackerLosses
+                            + ";DEFENDER_LOSSES=" + defenderLosses
             );
 
             reportRepository.save(attackerReport);
@@ -199,13 +201,21 @@ public class CombatService {
 
         } else {
 
-            long appat = applyAttackerLosses(
-                    attackVillage,
-                    unitTypeId,
-                    amount,
-                    lossRate,
-                    true
-            );
+            String attackerLosses =
+                    applyAttackerLosses(
+                            attackVillage,
+                            unitTypeId,
+                            amount,
+                            lossRate,
+                            true
+                    );
+
+            String defenderLosses =
+                    applyDefenderLosses(
+                            defVillage,
+                            lossRate,
+                            false
+                    );
 
             Report attackerReport = new Report();
 
@@ -216,7 +226,8 @@ public class CombatService {
                             + "TARGET=" + targetVillageId
                             + ";ATTACK=" + attackPower
                             + ";DEFENSE=" + defensePower
-                            + ";ATTACKER_LOSSES=" + appat
+                            + ";ATTACKER_LOSSES=" + attackerLosses
+                            + ";DEFENDER_LOSSES=" + defenderLosses
             );
 
             Report defenderReport = new Report();
@@ -228,8 +239,11 @@ public class CombatService {
                             + "SOURCE=" + sourceVillageId
                             + ";ATTACK=" + attackPower
                             + ";DEFENSE=" + defensePower
-                            + ";ATTACKER_LOSSES=" + appat
+                            + ";ATTACKER_LOSSES=" + attackerLosses
+                            + ";DEFENDER_LOSSES=" + defenderLosses
             );
+
+
 
             reportRepository.save(attackerReport);
             reportRepository.save(defenderReport);
@@ -284,7 +298,7 @@ public class CombatService {
         }
 
         double ratio =
-                (double) attackPower / defensePower;
+                (double) defensePower / attackPower;
 
         return Math.min(
                 1.0,
@@ -293,14 +307,17 @@ public class CombatService {
     }
 
 
-    private long applyAttackerLosses(
+    private String applyAttackerLosses(
             List<VillageUnits> attackVillage,
             List<Long> unitTypeIds,
             List<Integer> amounts,
             double lossRate,
             boolean attackerLost
     ) {
-        long totalLosses = 0;
+
+        StringBuilder result =
+                new StringBuilder();
+
         for(int i = 0; i < unitTypeIds.size(); i++) {
 
             if(amounts.get(i) <= 0) {
@@ -338,27 +355,43 @@ public class CombatService {
                         );
             }
 
-            totalLosses += losses;
-
             unit.setAmount(
                     unit.getAmount()
                             - losses
             );
 
+            if(losses > 0) {
 
+                result.append(
+                        unit.getUnitType()
+                                .getCodeName()
+                );
+
+                result.append("=");
+
+                result.append(losses);
+
+                result.append(";");
+            }
         }
 
-        villageUnitRepository.saveAll(attackVillage);
-        return totalLosses;
+        villageUnitRepository.saveAll(
+                attackVillage
+        );
+
+        return result.toString();
     }
 
-    private long applyDefenderLosses(
+
+
+    private String applyDefenderLosses(
             List<VillageUnits> defVillage,
             double lossRate,
             boolean defenderLost
     ) {
 
-        long totalLosses = 0;
+        StringBuilder result =
+                new StringBuilder();
 
         for (VillageUnits unit : defVillage) {
 
@@ -377,18 +410,33 @@ public class CombatService {
                         );
             }
 
-            totalLosses += losses;
-
             unit.setAmount(
-                    unit.getAmount() - losses
+                    unit.getAmount()
+                            - losses
             );
+
+            if (losses > 0) {
+
+                result.append(
+                        unit.getUnitType()
+                                .getCodeName()
+                );
+
+                result.append("=");
+
+                result.append(losses);
+
+                result.append(";");
+            }
         }
 
         villageUnitRepository.saveAll(
                 defVillage
         );
 
-        return totalLosses;
+        return result.toString();
     }
+
+
 
 }
