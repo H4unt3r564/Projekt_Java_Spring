@@ -12,31 +12,45 @@
 
 <body>
 
-<div class="world">
+<button id="centerBtn">
 
+    <img
+            src="/images/units/pinezkaMap.png"
+            alt="Moja wioska">
+
+</button>
+
+<div class="world">
     <div class="map" id="map">
 
         <div
                 th:each="v : ${villages}"
                 class="village"
 
-                th:attr="data-id=${v.villageId}"
+                th:attr="
+                data-id=${v.villageId},
+                data-x=${v.coordinateX},
+                data-y=${v.coordinateY}"
 
                 th:title="${v.name + ' (' + v.coordinateX + '|' + v.coordinateY + ')'}"
 
                 th:style="'left:' + (${v.coordinateX} * 5) + 'px; top:' + (${v.coordinateY} * 5) + 'px;'">
 
             <a th:href="@{/wioska(id=${v.villageId})}">
-                🏠
+                <img
+                        class="village-icon"
+                        th:src="@{/images/units/domekMap.png}"
+                        alt="Village">
             </a>
+
             <span class="owner"
                   th:text="${v.player.username}">
-            </span>
+        </span>
+
+        </div>
         </div>
 
     </div>
-
-</div>
 
 <div id="contextMenu" class="context-menu">
 
@@ -50,7 +64,9 @@
 
 </div>
 
-<script>
+<script th:inline="javascript">
+    const myVillageX = /*[[${myVillageX}]]*/ 0;
+    const myVillageY = /*[[${myVillageY}]]*/ 0;
 
     const map = document.getElementById("map");
 
@@ -62,8 +78,30 @@
     let offsetX = 0;
     let offsetY = 0;
 
+
+
     map.style.transform =
         `translate(${offsetX}px, ${offsetY}px)`;
+    document
+        .querySelectorAll(".village")
+        .forEach(v => v.classList.remove("my-focus"));
+
+    document
+        .querySelectorAll(".village")
+        .forEach(v => {
+
+            const x =
+                Number(v.dataset.x);
+
+            const y =
+                Number(v.dataset.y);
+
+            if(x === myVillageX &&
+                y === myVillageY) {
+
+                v.classList.add("my-focus");
+            }
+        });
 
     document.addEventListener("mousedown", e => {
 
@@ -88,8 +126,32 @@
 
         if(!isDragging) return;
 
-        offsetX = e.clientX - startX;
-        offsetY = e.clientY - startY;
+        let newOffsetX =
+            e.clientX - startX;
+
+        let newOffsetY =
+            e.clientY - startY;
+
+        const mapWidth = 5000;
+        const mapHeight = 5000;
+
+        const minX =
+            window.innerWidth - mapWidth;
+
+        const minY =
+            window.innerHeight - mapHeight;
+
+        offsetX =
+            Math.min(
+                0,
+                Math.max(minX, newOffsetX)
+            );
+
+        offsetY =
+            Math.min(
+                0,
+                Math.max(minY, newOffsetY)
+            );
 
         map.style.transform =
             `translate(${offsetX}px, ${offsetY}px)`;
@@ -144,6 +206,50 @@
                 "none";
         }
     );
+    function centerOnMyVillage() {
+
+        const myVillage =
+            [...document.querySelectorAll(".village")]
+                .find(v =>
+                    Number(v.dataset.x) === myVillageX &&
+                    Number(v.dataset.y) === myVillageY
+                );
+
+        if (!myVillage) {
+            return;
+        }
+
+        const rect =
+            myVillage.getBoundingClientRect();
+
+        const villageCenterX =
+            rect.left + rect.width / 2;
+
+        const villageCenterY =
+            rect.top + rect.height / 2;
+
+        offsetX +=
+            window.innerWidth / 2 - villageCenterX;
+
+        offsetY +=
+            window.innerHeight / 2 - villageCenterY;
+
+        map.style.transform =
+            `translate(${offsetX}px, ${offsetY}px)`;
+
+        myVillage.classList.add("my-focus");
+
+        setTimeout(() => {
+            myVillage.classList.remove("my-focus");
+        }, 5000);
+    }
+
+    document
+        .getElementById("centerBtn")
+        .addEventListener(
+            "click",
+            centerOnMyVillage
+        );
 
 </script>
 
