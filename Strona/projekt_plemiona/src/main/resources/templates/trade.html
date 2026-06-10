@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Trade</title>
+    </head>
+    <body>
+
+    <h1>Create Trade Offer</h1>
+
+    <form action="/trade/send" method="post">
+
+        ```
+        <input type="hidden"
+               name="receiverId"
+               th:value="${receiverId}">
+
+        <hr>
+
+        <h2>I Offer</h2>
+
+        <h3>Resources</h3>
+
+        <label>
+            Wood:
+            <input type="number"
+                   name="offerWood"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Clay:
+            <input type="number"
+                   name="offerClay"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Iron:
+            <input type="number"
+                   name="offerIron"
+                   value="0"
+                   min="0">
+        </label>
+
+        <h3>Units</h3>
+
+        <label>
+            Spear:
+            <input type="number"
+                   name="offerSpear"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Sword:
+            <input type="number"
+                   name="offerSword"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Axe:
+            <input type="number"
+                   name="offerAxe"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Archer:
+            <input type="number"
+                   name="offerArcher"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Light Cavalry:
+            <input type="number"
+                   name="offerLight"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Heavy Cavalry:
+            <input type="number"
+                   name="offerHeavy"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Ram:
+            <input type="number"
+                   name="offerRam"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Catapult:
+            <input type="number"
+                   name="offerCatapult"
+                   value="0"
+                   min="0">
+        </label>
+
+        <hr>
+
+        <h2>I Want</h2>
+
+        <h3>Resources</h3>
+
+        <label>
+            Wood:
+            <input type="number"
+                   name="requestWood"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Clay:
+            <input type="number"
+                   name="requestClay"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Iron:
+            <input type="number"
+                   name="requestIron"
+                   value="0"
+                   min="0">
+        </label>
+
+        <h3>Units</h3>
+
+        <label>
+            Spear:
+            <input type="number"
+                   name="requestSpear"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Sword:
+            <input type="number"
+                   name="requestSword"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Axe:
+            <input type="number"
+                   name="requestAxe"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Archer:
+            <input type="number"
+                   name="requestArcher"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Light Cavalry:
+            <input type="number"
+                   name="requestLight"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Heavy Cavalry:
+            <input type="number"
+                   name="requestHeavy"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Ram:
+            <input type="number"
+                   name="requestRam"
+                   value="0"
+                   min="0">
+        </label>
+        <br><br>
+
+        <label>
+            Catapult:
+            <input type="number"
+                   name="requestCatapult"
+                   value="0"
+                   min="0">
+        </label>
+
+        <hr>
+
+        <button type="submit">
+            Send Offer
+        </button>
+        ```
+
+    </form>
+
+    </body>
+    </html>

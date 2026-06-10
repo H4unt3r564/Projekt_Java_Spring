@@ -96,6 +96,11 @@ public class VillageController {
                 village.getVillageId()
         );
 
+        System.out.println(
+                "SHOW VILLAGE WOOD = "
+                        + village.getWood()
+        );
+
         model.addAttribute(
                 "woodPerHour",
                 resourceService.getWoodPerHour(village.getVillageId())

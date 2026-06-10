@@ -12,6 +12,8 @@ public interface VillageRepository extends JpaRepository<Village, Long> {
 
     List<Village> findAllByPlayer_PlayerId(Long playerId);
 
+    Optional<Village> findFirstByPlayer_PlayerId(Long playerId);
+
     @Query("""
     SELECT v
     FROM Village v

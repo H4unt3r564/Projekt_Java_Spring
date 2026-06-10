@@ -27,12 +27,12 @@
         </div>
 
         <a th:href="@{/wioska?{id}(id=${village.villageId})}">Wioska</a>
-<!--        <a th:href="#">Budynki</a>-->
-<!--        <a th:href="#">Jednostki</a>-->
+        <!--        <a th:href="#">Budynki</a>-->
+        <!--        <a th:href="#">Jednostki</a>-->
         <a th:href="@{/map}">Mapa</a>
-<!--        <a href="#">Gracze</a>-->
-<!--        <a href="#">Klany</a>-->
-<!--        <a href="#">Ranking</a>-->
+        <a th:href="@{/trade}">Handel</a>
+        <!--        <a href="#">Klany</a>-->
+        <!--        <a href="#">Ranking</a>-->
         <a th:href="@{/login}">Wyloguj</a>
 
     </div>
@@ -40,11 +40,11 @@
 
     <div id="village-player-info">
         Wioska gracza -
-         <span th:text="${player.username}"></span>
+        <span th:text="${player.username}"></span>
         (
-         <span th:text="${village.coordinateX}"></span>
+        <span th:text="${village.coordinateX}"></span>
         |
-         <span th:text="${village.coordinateY}"></span>
+        <span th:text="${village.coordinateY}"></span>
         )
     </div>
 
@@ -53,8 +53,8 @@
         <div class="resource">
             🪵 Drewno:
             <span id="wood"
-                th:text="${village.wood}"
-                th:attr="data-value=${village.wood},
+                  th:text="${village.wood}"
+                  th:attr="data-value=${village.wood},
                 data-rate=${woodPerHour ?: 0},
                 data-max=${maxStorage},
                 data-last=${village.lastUpdate}">
@@ -64,8 +64,8 @@
         <div class="resource">
             🧱 Glina:
             <span id="clay"
-                th:text="${village.clay}"
-                th:attr="data-value=${village.clay},
+                  th:text="${village.clay}"
+                  th:attr="data-value=${village.clay},
                 data-rate=${clayPerHour ?: 0},
                 data-max=${maxStorage},
                 data-last=${village.lastUpdate}">
@@ -75,8 +75,8 @@
         <div class="resource">
             ⛓️ Żelazo:
             <span id="iron"
-                th:text="${village.iron}"
-                th:attr="data-value=${village.iron},
+                  th:text="${village.iron}"
+                  th:attr="data-value=${village.iron},
                 data-rate=${ironPerHour ?: 0},
                 data-max=${maxStorage},
                 data-last=${village.lastUpdate}">
@@ -88,20 +88,27 @@
 
 <div class="village-map">
 
+<!--    <svg class="terrain" viewBox="0 0 1200 800">-->
     <svg class="terrain"
-         viewBox="0 0 600 400"
+         viewBox="0 0 1200 800"
          preserveAspectRatio="xMidYMid slice">
 
-        <rect width="600"
-              height="400"
-              fill="#6fa64f"/>
+        <image
+                href="/css/tloWioski.png"
+                width="1200"
+                height="800"/>
+    </svg>
 
-<!--        &lt;!&ndash; rzeka &ndash;&gt;-->
-<!--        <path d="M -20 360 C 120 320, 200 380, 320 340-->
-<!--                 S 540 300, 640 330-->
-<!--                 L 640 420-->
-<!--                 L -20 420 Z"-->
-<!--              fill="#6ca9d9"/>-->
+<!--        <rect width="600"-->
+<!--              height="400"-->
+<!--              fill="#6fa64f"/>-->
+
+<!--                &lt;!&ndash; rzeka &ndash;&gt;-->
+<!--                <path d="M -20 360 C 120 320, 200 380, 320 340-->
+<!--                         S 540 300, 640 330-->
+<!--                         L 640 420-->
+<!--                         L -20 420 Z"-->
+<!--                      fill="#6ca9d9"/>-->
 
     </svg>
 

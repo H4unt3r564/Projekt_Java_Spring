@@ -1,7 +1,10 @@
 package com.example.projekt_plemiona.services;
 
+import com.example.projekt_plemiona.models.Report;
+import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.models.VillageBuilding;
 import com.example.projekt_plemiona.models.VillageUnits;
+import com.example.projekt_plemiona.repositories.ReportRepository;
 import com.example.projekt_plemiona.repositories.VillageBuildingRepository;
 import com.example.projekt_plemiona.repositories.VillageRepository;
 import com.example.projekt_plemiona.repositories.VillageUnitRepository;
@@ -17,15 +20,19 @@ public class CombatService {
     private final VillageRepository villageRepository;
     private final VillageUnitRepository villageUnitRepository;
     private final VillageBuildingRepository villageBuildingRepository;
+    private final ReportRepository reportRepository;
+
 
     public CombatService(
             VillageRepository villageRepository,
             VillageUnitRepository villageUnitRepository,
-            VillageBuildingRepository villageBuildingRepository
+            VillageBuildingRepository villageBuildingRepository,
+            ReportRepository reportRepository
     ) {
         this.villageRepository = villageRepository;
         this.villageUnitRepository = villageUnitRepository;
         this.villageBuildingRepository = villageBuildingRepository;
+        this.reportRepository = reportRepository;
     }
 
     @Transactional
@@ -42,7 +49,25 @@ public class CombatService {
         List<VillageUnits> defVillage =
                 villageUnitRepository.findByVillage_VillageId(targetVillageId);
 
-        System.out.println("=== ATTACK ===");
+        Village sourceVillage =
+                villageRepository
+                        .findById(sourceVillageId)
+                        .orElseThrow();
+
+        Village targetVillage =
+                villageRepository
+                        .findById(targetVillageId)
+                        .orElseThrow();
+
+        Long attackerPlayerId =
+                sourceVillage
+                        .getPlayer()
+                        .getPlayerId();
+
+        Long defenderPlayerId =
+                targetVillage
+                        .getPlayer()
+                        .getPlayerId();
 
         long attackPower = 0;
 
@@ -114,13 +139,6 @@ public class CombatService {
                         defensePower * wallBonus
                 );
 
-        System.out.println(
-                "ATTACK POWER = " + attackPower
-        );
-
-        System.out.println(
-                "DEFENSE POWER = " + defensePower
-        );
 
         double lossRate =
                 calculateLosses(
@@ -130,44 +148,108 @@ public class CombatService {
 
         if (attackPower > defensePower) {
 
-            System.out.println(
-                    "ATTACKER WINS"
+            String attackerLosses =
+                    applyAttackerLosses(
+                            attackVillage,
+                            unitTypeId,
+                            amount,
+                            lossRate,
+                            false
+                    );
+
+            String defenderLosses =
+                    applyDefenderLosses(
+                            defVillage,
+                            lossRate,
+                            true
+                    );
+
+
+
+            Report attackerReport = new Report();
+
+            attackerReport.setPlayerId(attackerPlayerId);
+            attackerReport.setType("BATTLE");
+            attackerReport.setContentJson(
+                    "RESULT=WIN;"
+                            + "TARGET=" + targetVillageId
+                            + ";ATTACK=" + attackPower
+                            + ";DEFENSE=" + defensePower
+                            + ";ATTACKER_LOSSES=" + attackerLosses
+                            + ";DEFENDER_LOSSES=" + defenderLosses
             );
 
-            applyAttackerLosses(
-                    attackVillage,
-                    unitTypeId,
-                    amount,
-                    lossRate,
-                    false
+            Report defenderReport = new Report();
+
+            defenderReport.setPlayerId(defenderPlayerId);
+            defenderReport.setType("BATTLE");
+            defenderReport.setContentJson(
+                    "RESULT=LOSE;"
+                            + "SOURCE=" + sourceVillageId
+                            + ";ATTACK=" + attackPower
+                            + ";DEFENSE=" + defensePower
+                            + ";ATTACKER_LOSSES=" + attackerLosses
+                            + ";DEFENDER_LOSSES=" + defenderLosses
             );
 
-            applyDefenderLosses(
-                    defVillage,
-                    lossRate,
-                    true
-            );
+            reportRepository.save(attackerReport);
+            reportRepository.save(defenderReport);
+
+
+
+
 
         } else {
 
-            System.out.println(
-                    "DEFENDER WINS"
+            String attackerLosses =
+                    applyAttackerLosses(
+                            attackVillage,
+                            unitTypeId,
+                            amount,
+                            lossRate,
+                            true
+                    );
+
+            String defenderLosses =
+                    applyDefenderLosses(
+                            defVillage,
+                            lossRate,
+                            false
+                    );
+
+            Report attackerReport = new Report();
+
+            attackerReport.setPlayerId(attackerPlayerId);
+            attackerReport.setType("BATTLE");
+            attackerReport.setContentJson(
+                    "RESULT=LOSE;"
+                            + "TARGET=" + targetVillageId
+                            + ";ATTACK=" + attackPower
+                            + ";DEFENSE=" + defensePower
+                            + ";ATTACKER_LOSSES=" + attackerLosses
+                            + ";DEFENDER_LOSSES=" + defenderLosses
             );
 
-            applyAttackerLosses(
-                    attackVillage,
-                    unitTypeId,
-                    amount,
-                    lossRate,
-                    true
+            Report defenderReport = new Report();
+
+            defenderReport.setPlayerId(defenderPlayerId);
+            defenderReport.setType("BATTLE");
+            defenderReport.setContentJson(
+                    "RESULT=WIN;"
+                            + "SOURCE=" + sourceVillageId
+                            + ";ATTACK=" + attackPower
+                            + ";DEFENSE=" + defensePower
+                            + ";ATTACKER_LOSSES=" + attackerLosses
+                            + ";DEFENDER_LOSSES=" + defenderLosses
             );
 
-            applyDefenderLosses(
-                    defVillage,
-                    lossRate,
-                    false
-            );
+
+
+            reportRepository.save(attackerReport);
+            reportRepository.save(defenderReport);
         }
+
+
     }
 
 
@@ -216,7 +298,7 @@ public class CombatService {
         }
 
         double ratio =
-                (double) attackPower / defensePower;
+                (double) defensePower / attackPower;
 
         return Math.min(
                 1.0,
@@ -225,13 +307,16 @@ public class CombatService {
     }
 
 
-    private void applyAttackerLosses(
+    private String applyAttackerLosses(
             List<VillageUnits> attackVillage,
             List<Long> unitTypeIds,
             List<Integer> amounts,
             double lossRate,
             boolean attackerLost
     ) {
+
+        StringBuilder result =
+                new StringBuilder();
 
         for(int i = 0; i < unitTypeIds.size(); i++) {
 
@@ -274,22 +359,45 @@ public class CombatService {
                     unit.getAmount()
                             - losses
             );
+
+            if(losses > 0) {
+
+                result.append(
+                        unit.getUnitType()
+                                .getCodeName()
+                );
+
+                result.append("=");
+
+                result.append(losses);
+
+                result.append(";");
+            }
         }
 
-        villageUnitRepository.saveAll(attackVillage);
+        villageUnitRepository.saveAll(
+                attackVillage
+        );
+
+        return result.toString();
     }
 
-    private void applyDefenderLosses(
+
+
+    private String applyDefenderLosses(
             List<VillageUnits> defVillage,
             double lossRate,
             boolean defenderLost
     ) {
 
-        for(VillageUnits unit : defVillage) {
+        StringBuilder result =
+                new StringBuilder();
+
+        for (VillageUnits unit : defVillage) {
 
             long losses;
 
-            if(defenderLost) {
+            if (defenderLost) {
 
                 losses = unit.getAmount();
 
@@ -306,9 +414,29 @@ public class CombatService {
                     unit.getAmount()
                             - losses
             );
+
+            if (losses > 0) {
+
+                result.append(
+                        unit.getUnitType()
+                                .getCodeName()
+                );
+
+                result.append("=");
+
+                result.append(losses);
+
+                result.append(";");
+            }
         }
 
-        villageUnitRepository.saveAll(defVillage);
+        villageUnitRepository.saveAll(
+                defVillage
+        );
+
+        return result.toString();
     }
+
+
 
 }

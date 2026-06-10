@@ -6,36 +6,36 @@
     <link rel="stylesheet" th:href="@{/css/rejestracja.css}">
 </head>
 <body>
-    <div id="container">
+<div id="container">
 
-        <div id="header">
-            <span>PLEMIONA</span>
-            <br/>
-            <span>Witaj w świecie średniowiecznych wojen!</span>
+    <div id="header">
+        <span>PLEMIONA</span>
+        <br/>
+        <span>Witaj w świecie średniowiecznych wojen!</span>
+    </div>
+
+    <form method="post" action="">
+        <label for="email">Email:</label>
+        <input type="text" name="email" id="email" required>
+        <br/>
+
+        <label for="username">Login:</label>
+        <input type="text" name="username" id="username" required>
+        <br/>
+
+        <label for="password">Hasło:</label>
+        <input type="password" name="password" id="password" required>
+        <br/>
+
+        <div id="buttons">
+            <button type="submit">Zarejestruj</button>
+            <a class="btn" th:href="@{/login}">Logowanie</a>
         </div>
 
-        <form method="post" action="">
-            <label for="email">Email:</label>
-            <input type="text" name="email" id="email" required>
-            <br/>
-
-            <label for="username">Login:</label>
-            <input type="text" name="username" id="username" required>
-            <br/>
-
-            <label for="password">Hasło:</label>
-            <input type="password" name="password" id="password" required>
-            <br/>
-
-            <div id="buttons">
-                <button type="submit">Zarejestruj</button>
-                <a class="btn" th:href="@{/login}">Logowanie</a>
-            </div>
-
-        </form>
+    </form>
 
 
-    </div>
+</div>
 
 </body>
 </html>

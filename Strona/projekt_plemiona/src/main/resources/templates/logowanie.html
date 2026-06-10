@@ -6,30 +6,30 @@
     <link rel="stylesheet" th:href="@{/css/logowanie.css}">
 </head>
 <body>
-    <div id="container">
+<div id="container">
 
-        <div id="header">
-            <span>PLEMIONA</span>
-            <br/>
-            <span>Witaj w świecie średniowiecznych wojen!</span>
+    <div id="header">
+        <span>PLEMIONA</span>
+        <br/>
+        <span>Witaj w świecie średniowiecznych wojen!</span>
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <label for="username">Login:</label>
+        <input type="text" name="username" id="username">
+        <br/>
+        <label for="password">Hasło:</label>
+        <input type="password" name="password" id="password">
+        <br/>
+
+        <div id="buttons">
+            <button type="submit">Zaloguj</button>
+            <a class="btn" th:href="@{/rejestracja}">Rejestracja</a>
         </div>
 
-        <form th:action="@{/login}" method="post">
-            <label for="username">Login:</label>
-            <input type="text" name="username" id="username">
-            <br/>
-            <label for="password">Hasło:</label>
-            <input type="password" name="password" id="password">
-            <br/>
+    </form>
 
-            <div id="buttons">
-                <button type="submit">Zaloguj</button>
-                <a class="btn" th:href="@{/rejestracja}">Rejestracja</a>
-            </div>
-
-        </form>
-
-    </div>
+</div>
 
 </body>
 </html>
