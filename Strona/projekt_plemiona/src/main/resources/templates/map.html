@@ -22,6 +22,8 @@
 
 <div class="world">
     <div class="map" id="map">
+        <div id="decorations"></div>
+        <div id="fireflies"></div>
 
         <div
                 th:each="v : ${villages}"
@@ -206,6 +208,262 @@
                 "none";
         }
     );
+
+    function generateDecorations() {
+
+        const decorations =
+            document.getElementById("decorations");
+
+        const villages =
+            document.querySelectorAll(".village");
+
+        const occupiedPositions = [];
+
+        function isTooClose(
+            x,
+            y,
+            minDistance
+        ) {
+
+            for(const pos of occupiedPositions) {
+
+                const distance =
+                    Math.sqrt(
+                        (x - pos.x) ** 2 +
+                        (y - pos.y) ** 2
+                    );
+
+                if(distance < minDistance) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // =========================
+// KAMIENIE
+// =========================
+
+        for(let i = 0; i < 1200; i++) {
+
+            let x =
+                Math.random() * 5000;
+
+            let y =
+                Math.random() * 5000;
+
+            if(isTooClose(x, y, 35)) {
+                continue;
+            }
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                "/images/units/kamienMap.png";
+
+            img.classList.add(
+                "decoration",
+                "rock"
+            );
+
+            const scale =
+                0.5 + Math.random() * 0.5;
+
+            img.style.transform =
+                `scale(${scale})`;
+
+            img.style.left =
+                x + "px";
+
+            img.style.top =
+                y + "px";
+
+            decorations.appendChild(img);
+
+            occupiedPositions.push({
+                x: x,
+                y: y
+            });
+        }
+
+
+        // =========================
+        // KRZAKI
+        // =========================
+
+        for(let i = 0; i < 1500; i++) {
+
+            let x =
+                Math.random() * 5000;
+
+            let y =
+                Math.random() * 5000;
+
+            if(isTooClose(x, y, 55)) {
+                continue;
+            }
+
+            let tooCloseToVillage = false;
+
+            villages.forEach(v => {
+
+                const vx =
+                    Number(v.dataset.x) * 5;
+
+                const vy =
+                    Number(v.dataset.y) * 5;
+
+                const distance =
+                    Math.sqrt(
+                        (x - vx) ** 2 +
+                        (y - vy) ** 2
+                    );
+
+                if(distance < 70) {
+
+                    tooCloseToVillage =
+                        true;
+                }
+            });
+
+            if(tooCloseToVillage) {
+                continue;
+            }
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                Math.random() < 0.5
+                    ? "/images/units/krzewMap1.png"
+                    : "/images/units/krzewMap2.png";
+
+            img.classList.add(
+                "decoration",
+                "bush"
+            );
+
+            const scale =
+                0.7 + Math.random() * 0.5;
+
+            img.style.transform =
+                `scale(${scale})`;
+
+            img.style.left =
+                x + "px";
+
+            img.style.top =
+                y + "px";
+
+            decorations.appendChild(img);
+
+            occupiedPositions.push({
+                x: x,
+                y: y
+            });
+        }
+
+        // =========================
+        // DRZEWA
+        // =========================
+
+        for(let i = 0; i < 1000; i++) {
+
+            let x;
+            let y;
+
+            let valid = false;
+
+            let attempts = 0;
+
+            while(
+                !valid &&
+                attempts < 50
+                ) {
+
+                attempts++;
+
+                x =
+                    Math.random() * 5000;
+
+                y =
+                    Math.random() * 5000;
+
+                valid = true;
+
+                if(
+                    isTooClose(
+                        x,
+                        y,
+                        130
+                    )
+                ) {
+
+                    valid = false;
+                    continue;
+                }
+
+                villages.forEach(v => {
+
+                    const vx =
+                        Number(v.dataset.x) * 5;
+
+                    const vy =
+                        Number(v.dataset.y) * 5;
+
+                    const distance =
+                        Math.sqrt(
+                            (x - vx) ** 2 +
+                            (y - vy) ** 2
+                        );
+
+                    if(distance < 110) {
+
+                        valid = false;
+                    }
+                });
+            }
+
+            if(!valid) {
+                continue;
+            }
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                Math.random() < 0.5
+                    ? "/images/units/drzewoMap1.png"
+                    : "/images/units/drzewoMap2.png";
+
+            img.classList.add(
+                "decoration",
+                "tree"
+            );
+
+            const scale =
+                0.75 + Math.random() * 0.4;
+
+            img.style.transform =
+                `scale(${scale})`;
+
+            img.style.left =
+                x + "px";
+
+            img.style.top =
+                y + "px";
+
+            decorations.appendChild(img);
+
+            occupiedPositions.push({
+                x: x,
+                y: y
+            });
+        }
+    }
+
     function centerOnMyVillage() {
 
         const myVillage =
@@ -250,6 +508,37 @@
             "click",
             centerOnMyVillage
         );
+
+    function generateFireflies() {
+
+        const fireflies =
+            document.getElementById("fireflies");
+
+        for(let i = 0; i < 600; i++) {
+
+            const dot =
+                document.createElement("div");
+
+            dot.classList.add("firefly");
+
+            dot.style.left =
+                Math.random() * 5000 + "px";
+
+            dot.style.top =
+                Math.random() * 5000 + "px";
+
+            dot.style.animationDelay =
+                Math.random() * 4 + "s";
+
+            dot.style.animationDuration =
+                (2 + Math.random() * 4) + "s";
+
+            fireflies.appendChild(dot);
+        }
+    }
+
+    generateDecorations();
+    generateFireflies();
 
 </script>
 
