@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Military Center</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f1e8;
+            margin: 30px;
+            color: #2d2d2d;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 35px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 25px;
+        }
+
+        th {
+            background: #7d5a3a;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            border: 1px solid #d5d5d5;
+            padding: 8px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 6px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+        }
+
+        button {
+            background: #4a8f3d;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #3b742f;
+        }
+
+        .box {
+            background: white;
+            padding: 15px;
+            border: 1px solid #ccc;
+            margin-bottom: 25px;
+        }
+
+        .resources {
+            display: flex;
+            gap: 20px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>Military Center</h1>
+
+<div class="box">
+
+    <div class="resources">
+
+        <span>
+            🌲 Wood:
+            <span th:text="${village.wood}"></span>
+        </span>
+
+        <span>
+            🧱 Clay:
+            <span th:text="${village.clay}"></span>
+        </span>
+
+        <span>
+            ⛓ Iron:
+            <span th:text="${village.iron}"></span>
+        </span>
+
+    </div>
+
+</div>
+
+<h2>Your Army</h2>
+
+<table>
+
+    <tr>
+        <th>Unit</th>
+        <th>Amount</th>
+    </tr>
+
+    <tr th:each="unit : ${units}">
+
+        <td th:text="${unit.unitType.codeName}">
+            spear
+        </td>
+
+        <td th:text="${unit.amount}">
+            0
+        </td>
+
+    </tr>
+
+</table>
+
+<h2>Recruit Units</h2>
+
+<table>
+
+    <tr>
+        <th>Unit</th>
+        <th>Wood</th>
+        <th>Clay</th>
+        <th>Iron</th>
+        <th>Barracks Level</th>
+        <th>Amount</th>
+        <th>Action</th>
+    </tr>
+
+    <tr>
+        <td>Spear</td>
+        <td>50</td>
+        <td>30</td>
+        <td>10</td>
+        <td>1</td>
+        <td>
+            <form action="/units" method="post">
+                <input type="hidden" name="unitTypeId" value="1">
+                <input type="number" name="amount" value="1" min="1">
+        </td>
+        <td>
+            <button type="submit">Recruit</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Sword</td>
+        <td>30</td>
+        <td>30</td>
+        <td>70</td>
+        <td>10</td>
+        <td>
+            <form action="/units" method="post">
+                <input type="hidden" name="unitTypeId" value="2">
+                <input type="number" name="amount" value="1" min="1">
+        </td>
+        <td>
+            <button type="submit">Recruit</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Axe</td>
+        <td>60</td>
+        <td>30</td>
+        <td>40</td>
+        <td>20</td>
+        <td>
+            <form action="/units" method="post">
+                <input type="hidden" name="unitTypeId" value="3">
+                <input type="number" name="amount" value="1" min="1">
+        </td>
+        <td>
+            <button type="submit">Recruit</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Archer</td>
+        <td>80</td>
+        <td>50</td>
+        <td>20</td>
+        <td>30</td>
+        <td>
+            <form action="/units" method="post">
+                <input type="hidden" name="unitTypeId" value="4">
+                <input type="number" name="amount" value="1" min="1">
+        </td>
+        <td>
+            <button type="submit">Recruit</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Light Cavalry</td>
+        <td>125</td>
+        <td>100</td>
+        <td>250</td>
+        <td>40</td>
+        <td>
+            <form action="/units" method="post">
+                <input type="hidden" name="unitTypeId" value="5">
+                <input type="number" name="amount" value="1" min="1">
+        </td>
+        <td>
+            <button type="submit">Recruit</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Heavy Cavalry</td>
+        <td>200</td>
+        <td>150</td>
+        <td>600</td>
+        <td>50</td>
+        <td>
+            <form action="/units" method="post">
+                <input type="hidden" name="unitTypeId" value="6">
+                <input type="number" name="amount" value="1" min="1">
+        </td>
+        <td>
+            <button type="submit">Recruit</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Ram</td>
+        <td>300</td>
+        <td>250</td>
+        <td>200</td>
+        <td>60</td>
+        <td>
+            <form action="/units" method="post">
+                <input type="hidden" name="unitTypeId" value="7">
+                <input type="number" name="amount" value="1" min="1">
+        </td>
+        <td>
+            <button type="submit">Recruit</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Catapult</td>
+        <td>320</td>
+        <td>300</td>
+        <td>250</td>
+        <td>70</td>
+        <td>
+            <form action="/units" method="post">
+                <input type="hidden" name="unitTypeId" value="8">
+                <input type="number" name="amount" value="1" min="1">
+        </td>
+        <td>
+            <button type="submit">Recruit</button>
+            </form>
+        </td>
+    </tr>
+
+</table>
+
+<h2>Recruitment Queue</h2>
+
+<table>
+
+    <tr>
+        <th>Unit</th>
+        <th>Amount</th>
+        <th>Ready At</th>
+    </tr>
+
+    <tr th:each="q : ${queue}">
+
+        <td th:text="${q.unitType.codeName}">
+            spear
+        </td>
+
+        <td th:text="${q.amount}">
+            0
+        </td>
+
+        <td th:text="${#temporals.format(q.finishTime, 'dd.MM.yyyy HH:mm:ss')}">
+            11.06.2026 01:00:00
+        </td>
+
+    </tr>
+
+</table>
+
+</body>
+</html>
