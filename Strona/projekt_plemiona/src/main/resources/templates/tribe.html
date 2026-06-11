@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Plemię</title>
+</head>
+<body>
+
+<h1>Członkowie plemienia</h1>
+
+<table border="1">
+
+    <tr>
+        <th>Gracz</th>
+        <th>Rola</th>
+        <th>Akcja</th>
+    </tr>
+
+    <tr th:each="member : ${members}">
+
+        <td th:text="${member.player.username}">
+        </td>
+
+        <td th:text="${member.role}">
+        </td>
+
+        <td>
+
+            <form
+                    th:if="${leader and member.player.playerId != currentPlayerId}"
+                    action="/tribe/kick"
+                    method="post">
+
+                <input
+                        type="hidden"
+                        name="tribeId"
+                        th:value="${tribeId}">
+
+                <input
+                        type="hidden"
+                        name="playerId"
+                        th:value="${member.player.playerId}">
+
+                <button type="submit">
+                    Wyrzuć
+                </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+</table>
+
+</body>
+</html>

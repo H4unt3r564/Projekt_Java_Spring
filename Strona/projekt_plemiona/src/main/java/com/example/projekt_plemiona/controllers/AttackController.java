@@ -3,6 +3,7 @@ package com.example.projekt_plemiona.controllers;
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.services.CombatService;
+import com.example.projekt_plemiona.services.TravelService;
 import com.example.projekt_plemiona.services.UserService;
 import com.example.projekt_plemiona.services.VillageService;
 import org.springframework.security.core.Authentication;
@@ -21,11 +22,13 @@ public class AttackController {
     private final CombatService combatService;
     private final VillageService villageService;
     private final UserService userService;
+    private final TravelService travelService;
 
-    public AttackController(CombatService combatService, VillageService villageService, UserService userService) {
+    public AttackController(CombatService combatService, VillageService villageService, UserService userService, TravelService travelService) {
         this.combatService = combatService;
         this.villageService = villageService;
         this.userService = userService;
+        this.travelService = travelService;
     }
 
     @PostMapping("/attack")
@@ -44,6 +47,12 @@ public class AttackController {
                 unitTypeId,
                 amount
         );
+
+        //test czy podroz dziala
+//        travelService.createTravel(
+//                sourceVillageId,
+//                targetVillageId
+//        );
 
         return "redirect:/wioska?id=" + sourceVillageId;
     }
