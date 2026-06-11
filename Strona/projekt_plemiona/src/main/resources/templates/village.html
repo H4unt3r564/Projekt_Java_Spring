@@ -88,7 +88,6 @@
 
 <div class="village-map">
 
-<!--    <svg class="terrain" viewBox="0 0 1200 800">-->
     <svg class="terrain"
          viewBox="0 0 1200 800"
          preserveAspectRatio="xMidYMid slice">
@@ -99,16 +98,6 @@
                 height="800"/>
     </svg>
 
-<!--        <rect width="600"-->
-<!--              height="400"-->
-<!--              fill="#6fa64f"/>-->
-
-<!--                &lt;!&ndash; rzeka &ndash;&gt;-->
-<!--                <path d="M -20 360 C 120 320, 200 380, 320 340-->
-<!--                         S 540 300, 640 330-->
-<!--                         L 640 420-->
-<!--                         L -20 420 Z"-->
-<!--                      fill="#6ca9d9"/>-->
 
     </svg>
 
@@ -117,14 +106,31 @@
 
         <div class="building-circle">
 
-            <span th:if="${b.buildingType.name == 'Lumber Mill'}">🪵</span>
-            <span th:if="${b.buildingType.name == 'Clay Pit'}">🧱</span>
-            <span th:if="${b.buildingType.name == 'Iron Mine'}">⛓️</span>
-            <span th:if="${b.buildingType.name == 'Farm'}">🌾</span>
-            <span th:if="${b.buildingType.name == 'Barracks'}">🏹</span>
-            <span th:if="${b.buildingType.name == 'Headquarters'}">🏰</span>
-            <span th:if="${b.buildingType.name == 'Wall'}">🛡️</span>
-            <span th:if="${b.buildingType.name == 'Warehouse'}">📦</span>
+            <span th:if="${b.buildingType.name == 'Lumber Mill'}">
+                <img th:src="@{/css/lumberMill.png}"/>
+            </span>
+
+            <span th:if="${b.buildingType.name == 'Clay Pit'}">
+                <img th:src="@{/css/clayPit.png}"/>
+            </span>
+            <span th:if="${b.buildingType.name == 'Iron Mine'}">
+                <img th:src="@{/css/ironMine.png}"/>
+            </span>
+            <span th:if="${b.buildingType.name == 'Farm'}">
+                <img th:src="@{/css/farm.png}"/>
+            </span>
+            <span th:if="${b.buildingType.name == 'Barracks'}">
+                <img th:src="@{/css/barracks.png}"/>
+            </span>
+            <span th:if="${b.buildingType.name == 'Headquarters'}">
+                <img th:src="@{/css/headquarters.png}"/>
+            </span>
+            <span th:if="${b.buildingType.name == 'Wall'}">
+                <img th:src="@{/css/wall.png}"/>
+            </span>
+            <span th:if="${b.buildingType.name == 'Warehouse'}">
+                <img th:src="@{/css/warehouse.png}"/>
+            </span>
 
         </div>
 
@@ -132,9 +138,9 @@
              th:text="${b.levelNumber}">
         </div>
 
-        <div class="building-label"
-             th:text="${b.buildingType.name}">
-        </div>
+<!--        <div class="building-label"-->
+<!--             th:text="${b.buildingType.name}">-->
+<!--        </div>-->
 
         <div class="modal">
             <div id="modal_header">
@@ -203,7 +209,7 @@
 
 </div>
 
-<hr>
+<!--<hr>-->
 
 <!--<h2>Kolejka budowy</h2>-->
 
