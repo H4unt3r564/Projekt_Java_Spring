@@ -96,10 +96,7 @@ public class VillageController {
                 village.getVillageId()
         );
 
-        System.out.println(
-                "SHOW VILLAGE WOOD = "
-                        + village.getWood()
-        );
+
 
         model.addAttribute(
                 "woodPerHour",
@@ -157,7 +154,7 @@ public class VillageController {
 
         Village village = resourceService.snapshotResources(villageId);
 
-        
+
 
         // zabezpieczenie przed upgradem cudzej wioski
         if (!village.getPlayer().getUsername().equals(username)) {

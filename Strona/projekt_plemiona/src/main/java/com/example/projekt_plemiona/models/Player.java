@@ -29,6 +29,9 @@ public class Player {
     @Column(name = "PASSWORD_HASH")
     private String passwordHash;
 
+    @Column(name = "IS_TRIBE_LEADER")
+    private Integer isTribeLeader;
+
     @CreationTimestamp
     @Column(name = "JOINED_AT")
     private LocalDateTime joinedAt;

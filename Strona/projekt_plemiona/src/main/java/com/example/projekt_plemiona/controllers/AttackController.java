@@ -2,6 +2,8 @@ package com.example.projekt_plemiona.controllers;
 
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
+import com.example.projekt_plemiona.repositories.PlayerRepository;
+import com.example.projekt_plemiona.repositories.VillageRepository;
 import com.example.projekt_plemiona.services.CombatService;
 import com.example.projekt_plemiona.services.UserService;
 import com.example.projekt_plemiona.services.VillageService;
@@ -21,11 +23,15 @@ public class AttackController {
     private final CombatService combatService;
     private final VillageService villageService;
     private final UserService userService;
+    private final PlayerRepository playerRepository;
+    private final VillageRepository villageRepository;
 
-    public AttackController(CombatService combatService, VillageService villageService, UserService userService) {
+    public AttackController(CombatService combatService, VillageService villageService, UserService userService, PlayerRepository playerRepository, VillageRepository villageRepository) {
         this.combatService = combatService;
         this.villageService = villageService;
         this.userService = userService;
+        this.playerRepository = playerRepository;
+        this.villageRepository = villageRepository;
     }
 
     @PostMapping("/attack")
@@ -82,5 +88,39 @@ public class AttackController {
 
 
         return "attack";
+    }
+
+    @GetMapping("/attack-search")
+    public String attackSearchPage() {
+        return "attack-search.html";
+    }
+
+    @GetMapping("/attack/search")
+    public String searchPlayer(
+            @RequestParam String username
+    ) {
+
+        Player player =
+                playerRepository
+                        .findByUsername(username)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Player not found"
+                                )
+                        );
+
+        Village targetVillage =
+                villageRepository
+                        .findByPlayer_PlayerId(
+                                player.getPlayerId()
+                        )
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Village not found"
+                                )
+                        );
+
+        return "redirect:/attack?targetVillageId="
+                + targetVillage.getVillageId();
     }
 }

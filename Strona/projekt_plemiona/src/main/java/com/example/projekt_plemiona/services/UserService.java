@@ -9,52 +9,64 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Random;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class UserService {
+
     private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
     private final VillageRepository villageRepository;
 
-    public UserService(PlayerRepository PlayerRepository, PasswordEncoder passwordEncoder, VillageRepository villageRepository) {
-        this.playerRepository = PlayerRepository;
+    public UserService(PlayerRepository playerRepository,
+                       PasswordEncoder passwordEncoder,
+                       VillageRepository villageRepository) {
+        this.playerRepository = playerRepository;
         this.passwordEncoder = passwordEncoder;
         this.villageRepository = villageRepository;
     }
 
-    public List<Player> findAll() { return playerRepository.findAll(); }
+    public List<Player> findAll() {
+        return playerRepository.findAll();
+    }
 
     public void save(Player user) {
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+
+        if (user.getIsTribeLeader() == null) {
+            user.setIsTribeLeader(0);
+        }
+
         playerRepository.save(user);
     }
 
     public Player findById(Long id) {
-        return playerRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
+        return playerRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
 
-    public void delete(Long id) { playerRepository.deleteById(id); }
-
+    public void delete(Long id) {
+        playerRepository.deleteById(id);
+    }
 
     public void register(String username, String email, String password) {
 
         Player player = new Player();
+
         player.setUsername(username);
         player.setEmail(email);
+        player.setPasswordHash(passwordEncoder.encode(password));
 
-        player.setPasswordHash(
-                passwordEncoder.encode(password)
-        );
+        // <-- TO NAPRAWIA BŁĄD
+        player.setIsTribeLeader(0);
 
         playerRepository.save(player);
 
         Village village = new Village();
 
         village.setPlayer(player);
-
         village.setName("First Village");
 
         Random random = new Random();
@@ -66,12 +78,12 @@ public class UserService {
         village.setClay(1000);
         village.setIron(1000);
 
-        if(village.getCoordinateX() < 500) {
+        if (village.getCoordinateX() < 500) {
             village.setContinent(55);
-        }
-        else {
+        } else {
             village.setContinent(66);
         }
+
         villageRepository.save(village);
     }
 

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Wyszukaj gracza</title>
+    <title>Wyszukiwanie celu</title>
 
-    <link rel="stylesheet" th:href="@{/css/trade-search.css}">
+    <link rel="stylesheet" th:href="@{/css/attack-search.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
@@ -26,29 +25,27 @@
         <a href="/attack-search">Atak</a>
         <a href="/units">Jednostki</a>
         <a href="/map">Mapa</a>
-        <a href="/trade/search">Handel</a>
+        <a href="/trade">Handel</a>
         <a href="/reports">Raporty</a>
         <a href="/login">Wyloguj</a>
 
     </div>
 
     <div id="village-player-info">
-        Handel
+        Atak
     </div>
-
-    <div class="header-placeholder"></div>
 
 </div>
 
 <div class="search-container">
 
-    <h1>📦 Handel 📦</h1>
+    <h1>⚔ Znajdź cel ataku ⚔</h1>
 
     <p class="subtitle">
-        Wpisz nazwę gracza, z którym chcesz handlować
+        Wpisz nazwę gracza, którego chcesz zaatakować
     </p>
 
-    <form action="/trade/search" method="get">
+    <form action="/attack/search" method="get">
 
         <input
                 type="text"
@@ -72,12 +69,14 @@
     document
         .getElementById("menuBtn")
         .addEventListener("click", () => {
+
             sidebar.classList.add("open");
         });
 
     document
         .getElementById("sidebar_close")
         .addEventListener("click", () => {
+
             sidebar.classList.remove("open");
         });
 
