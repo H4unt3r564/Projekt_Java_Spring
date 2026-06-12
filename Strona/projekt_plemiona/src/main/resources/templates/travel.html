@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Travel Test</title>
+</head>
+<body>
+
+<h1>Test czasu podróży</h1>
+
+<form method="post" action="/travel">
+
+    <label>Wioska startowa:</label>
+    <input type="text"
+           name="sourceVillageName"
+           required>
+
+    <br><br>
+
+    <label>Wioska docelowa:</label>
+    <input type="text"
+           name="targetVillageName"
+           required>
+
+    <br><br>
+
+    <button type="submit">
+        Oblicz podróż
+    </button>
+
+</form>
+
+</body>
+</html>
