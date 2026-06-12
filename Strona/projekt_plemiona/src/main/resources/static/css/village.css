@@ -358,6 +358,13 @@
         height: 5vh;
         margin-left:50px;
         color: #ead8b0;
+        font-size:30px;
+        transition: .2s;
+        cursor:pointer;
+    }
+
+    .menu-btn:hover{
+        transform:scale(1.1);
     }
 
     .sidebar {
@@ -406,10 +413,12 @@
         border-bottom: 1px solid rgba(255,255,255,.15);
 
         transition: 0.25s;
+        font-size: 17px;
     }
 
     .sidebar a:hover {
         background: #6d4828;
+        padding-left:35px;
     }
 
     #sidebar_close{
