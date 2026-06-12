@@ -2,6 +2,7 @@ package com.example.projekt_plemiona.controllers;
 
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
+import com.example.projekt_plemiona.services.ResourceService;
 import com.example.projekt_plemiona.services.UnitRecruitmentService;
 import com.example.projekt_plemiona.services.UserService;
 import com.example.projekt_plemiona.services.VillageService;
@@ -15,16 +16,19 @@ public class UnitController {
     private final UserService userService;
     private final VillageService villageService;
     private final UnitRecruitmentService unitRecruitmentService;
+    private final ResourceService resourceService;
 
 
     public UnitController(
             UserService userService,
             VillageService villageService,
-            UnitRecruitmentService unitRecruitmentService
-    ) {
+            UnitRecruitmentService unitRecruitmentService,
+            ResourceService resourceService
+            ) {
         this.userService = userService;
         this.villageService = villageService;
         this.unitRecruitmentService = unitRecruitmentService;
+        this.resourceService = resourceService;
     }
 
     @GetMapping("/units")
@@ -55,6 +59,26 @@ public class UnitController {
                 unitRecruitmentService.getQueue(
                         village.getVillageId()
                 )
+        );
+
+        model.addAttribute(
+                "woodPerHour",
+                resourceService.getWoodPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "clayPerHour",
+                resourceService.getClayPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "ironPerHour",
+                resourceService.getIronPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "maxStorage",
+                resourceService.getMaxStorage(village.getVillageId())
         );
 
 

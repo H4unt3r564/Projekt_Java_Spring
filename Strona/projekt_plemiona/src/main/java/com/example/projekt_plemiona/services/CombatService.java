@@ -293,19 +293,14 @@ public class CombatService {
             long defensePower
     ) {
 
-        if (attackPower <= 0) {
+        if (attackPower <= 0 || defensePower <= 0) {
             return 0.0;
         }
 
-        double ratio =
-                (double) defensePower / attackPower;
-
-        return Math.min(
-                1.0,
-                ratio / 2.0
-        );
+        return (double)
+                Math.min(attackPower, defensePower)
+                / Math.max(attackPower, defensePower);
     }
-
 
     private String applyAttackerLosses(
             List<VillageUnits> attackVillage,

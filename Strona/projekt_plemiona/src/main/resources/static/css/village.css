@@ -1,154 +1,490 @@
-.village-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 120px);
-    grid-template-rows: repeat(3, 120px);
-    gap: 10px;
-    justify-content: center;
-    margin-top: 30px;
+:root{
+    --primary-bg-color: oklch(0.478 0.083 73.592);
+    --secondary-bg-color: oklch(25% .04 45);
+    --primary-font-color: oklch(35% .07 45);
+    --border-color: oklch(72% .06 60);
+    --resource-background-color: oklch(96% .03 80);
+}
+/*:root{*/
+/*    --primary-bg-color: #a98d63;*/
+/*    --secondary-bg-color: #2b1b11;*/
+/*    --primary-font-color: #3d2818;*/
+/*    --border-color: #6d4c2f;*/
+/*    --resource-background-color: #c8ae7f;*/
+/*}*/
+
+body{
+    background: var(--primary-bg-color);
+    margin:0;
+    min-height:100vh;
 }
 
-.tile {
-    width: 120px;
-    height: 120px;
-    border-radius: 12px;
+/* HEADER */
 
-    display: flex;
+#header{
+    position: fixed;
+    top:0;
+    width:100%;
+    height:80px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:1001;
+
+    background:
+            linear-gradient(
+                    #5a3820,
+                    #4b2e18
+            );
+
+    color:#ead8b0;
+
+    border-bottom:
+            3px solid #b28b5c;
+
+    box-shadow:
+            0 4px 15px rgba(0,0,0,.4);
+}
+
+#village-player-info{
+    font-size: 1.3em;
+}
+
+/* SUROWCE W HEADERZE */
+
+.resources-bar{
+    display:flex;
+    align-items: center;
+}
+
+.resource{
+    width: 100px;
+    height: 50px;
+    /*background: var(--resource-background-color);*/
+    display:flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /*border: 2px solid var(--border-color);*/
+    border-radius: calc(.5rem - 2px);
+    margin-right:15px;
+
+    background: #ddc486;
+
+    border:
+            2px solid #6d4c2f;
+
+    color:#2b1b11;
+
+    box-shadow:
+            0 2px 8px rgba(0,0,0,.25);
+}
+
+/* =========================================
+   VILLAGE MAP
+========================================= */
+
+.village-map {
+    position: relative;
+
+    width: 1200px;
+    height: 800px;
+
+    margin: 30px auto;
+
+    margin-top: 90px;
+    overflow: hidden;
+
+    border: 4px solid #6d4828;
+    border-radius: 20px;
+
+}
+
+.terrain {
+    /*background-image: url("tloWioski.png");*/
+    /*background-size: auto;*/
+    /*position: absolute;*/
+    /*inset: 0;*/
+
+    /*width: 100%;*/
+    /*height: 100%;*/
+
+    position:absolute;
+    inset:0;
+
+    background-image:url("tloWioski.png");
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+
+/* =========================================
+   BUILDINGS
+========================================= */
+
+.building-node {
+    opacity:45%;
+    position: absolute;
+
+    transform: translate(-50%, -50%);
 
     cursor: pointer;
-    color: white;
-    font-weight: bold;
 
-    position: relative;
-    transition: 0.2s;
+    z-index: 10;
+
+    transition: 1s;
 }
 
-.tile:hover {
-    transform: scale(1.05);
+.building-node:hover{
+    opacity: 100%;
 }
 
-/* ICON + LEVEL */
-.icon {
-    font-size: 34px;
-}
+.building-circle {
+    width: 70px;
+    height: 70px;
 
-.lvl {
-    font-size: 14px;
-    margin-top: 5px;
-}
+    border-radius: 50%;
 
-/* pointer fix */
-.icon, .lvl {
-    pointer-events: none;
-}
-
-/* HOVER MENU */
-.menu {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    background: rgba(0,0,0,0.85);
-    border-radius: 12px;
+    /*border: 3px solid var(--primary-font-color);*/
+    /*background: #f4ebdb;*/
 
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    opacity: 0;
+    font-size: 30px;
+
+    /*box-shadow: 0 4px 10px rgba(0,0,0,.25);*/
+
+    background:
+            linear-gradient(
+                    #ead8b0,
+                    #d6bf95
+            );
+
+    border:
+            3px solid #6d4c2f;
+
+    color:#2b1b11;
+
+    box-shadow:
+            0 4px 10px rgba(0,0,0,.35);
+}
+
+.building-label {
+    margin-top: 6px;
+
+    /*background: rgba(255,255,255,.85);*/
+
+    border-radius: 6px;
+
+    padding: 2px 6px;
+
+    text-align: center;
+
+    font-size: 11px;
+
+    background:
+            rgba(234,216,176,.95);
+
+    border:
+            1px solid #6d4c2f;
+
+    color:#2b1b11;
+
+    font-weight:bold;
+}
+
+.icon,
+.lvl {
     pointer-events: none;
-    transition: 0.2s;
 }
 
-.tile:hover .menu {
-    opacity: 1;
-    pointer-events: all;
+
+/* =========================================
+   BUILDING LEVEL BADGE
+========================================= */
+
+.lvl {
+    position: absolute;
+
+    right: 0px;
+    bottom: 20px;
+
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    /*background: var(--primary-font-color);*/
+    /*color: white;*/
+
+    font-size: 12px;
+
+    background:
+            linear-gradient(
+                    #e7c96b,
+                    #c89f2e
+            );
+
+    color:#2b1b11;
+
+    border:
+            2px solid #8b651d;
+
+    font-weight:bold;
 }
 
-.title {
-    font-size: 14px;
-    margin-bottom: 5px;
+
+/* =========================================
+   BUILDING POSITIONS
+========================================= */
+.building-node:nth-child(2){ left:49%; top:47%; }
+
+.building-node:nth-child(3){ left:48%; top:18%; }  /* 0° */
+.building-node:nth-child(4){ left:24%; top:27%; }  /* 51° */
+.building-node:nth-child(5){ left:74%; top:25%; }  /* 103° */
+.building-node:nth-child(6){ left:22%; top:49%; }  /* 154° */
+.building-node:nth-child(7){ left:29%; top:72%; }  /* 206° */
+.building-node:nth-child(8){ left:52%; top:77%; }  /* 257° */
+.building-node:nth-child(9){ left:75%; top:52%; }  /* 309° */
+
+/* =========================================
+   BUILDING MODAL
+========================================= */
+
+.modal {
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 350px;
+
+    padding: 20px;
+
+    /*background: #f6ebdb;*/
+
+    /*border: 3px solid #6d4828;*/
+    border-radius: 15px;
+
+    /*color: var(--secondary-bg-color);*/
+
+    z-index: 99999;
+
+    display: none;
+    cursor: auto;
+
+    background:#ead8b0;
+
+    border:
+            3px solid #6d4c2f;
+
+    box-shadow:
+            0 8px 25px rgba(0,0,0,.45);
+
+    color:#2b1b11;
 }
 
-/* BUTTON */
+#modal_header{
+    width:100%;
+    height:2vh;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+}
+
+.modal_resource{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border: 2px solid var(--border-color);
+    border-radius: calc(.5rem - 2px);
+    margin-bottom: 3px;
+}
+
+.modal.open {
+    display: block;
+}
+
+.modal_close{
+    background: none;
+    border: none;
+    color: var(--secondary-bg-color);
+    cursor: pointer;
+}
+
+/* =========================================
+   UPGRADE BUTTON
+========================================= */
+
 .upgrade-btn {
     margin-top: 10px;
+
     padding: 6px 10px;
-    border: none;
+
+    /*border: none;*/
     border-radius: 6px;
 
     cursor: pointer;
-    background: #2ecc71;
-    color: white;
+
+    /*background: var(--primary-font-color);*/
+    /*color: var(--primary-bg-color);*/
+
     font-weight: bold;
+    transition: 0.25s;
+
+    background:
+            linear-gradient(
+                    #e7c96b,
+                    #c89f2e
+            );
+
+    color:#2b1b11;
+
+    border:
+            2px solid #8b651d;
 }
 
 .upgrade-btn:hover {
-    background: #27ae60;
+    /*opacity: 80%;*/
+    filter:brightness(1.1);
 }
 
-/* BUILDING COLORS */
-/* NOWE BUILDINGI */
+/* SIDEBAR */
 
-.LUMBER-MILL {
-    background: #27ae60;
+.menu-btn{
+    background:none;
+    border:none;
+
+    width:60px;
+    height:60px;
+
+    margin-left:30px;
+
+    color:#ead8b0;
+
+    font-size:30px;
+
+    cursor:pointer;
+
+    transition:.2s;
 }
 
-.CLAY-PIT {
-    background: #d35400;
+.menu-btn:hover{
+    transform:scale(1.1);
 }
 
-.IRON-MINE {
-    background: #7f8c8d;
+.sidebar{
+    position:fixed;
+
+    top:0;
+    left:-320px;
+
+    width:320px;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    background:#4b2e18;
+
+    transition:.3s;
+
+    z-index:2000;
+
+    box-shadow:
+            5px 0 20px rgba(0,0,0,.4);
 }
 
-/* STARE */
-
-.FARM {
-    background: #2ecc71;
+.sidebar.open{
+    left:0;
 }
 
-.BARRACKS {
-    background: #e74c3c;
+.sidebar.open {
+    left: 0;
 }
 
-.HEADQUARTERS {
-    background: #3498db;
+.sidebar-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:25px;
+
+    color:#ead8b0;
+
+    font-size:24px;
+    font-weight:bold;
+
+    border-bottom:
+            1px solid rgba(255,255,255,.15);
 }
 
-.MARKET {
-    background: #f1c40f;
-    color: black;
+.sidebar a{
+
+    padding:18px 25px;
+
+    color:#ead8b0;
+
+    text-decoration:none;
+
+    border-bottom:
+            1px solid rgba(255,255,255,.15);
+
+    transition:.25s;
+
+    font-size:17px;
 }
 
-.SMITHY {
-    background: #95a5a6;
+.sidebar a:hover{
+
+    background:#6d4828;
+
+    padding-left:35px;
 }
 
-.STABLE {
-    background: #e67e22;
+.sidebar a:hover {
+    background: #6d4828;
 }
 
-.WALL {
-    background: #7f8c8d;
+#sidebar_close{
+
+    width:40px;
+    height:40px;
+
+    background:none;
+    border:none;
+
+    color:#ead8b0;
+
+    font-size:18px;
+
+    cursor:pointer;
 }
 
-.WAREHOUSE {
-    background: #8e44ad;
-}
 
-/* fallback */
-.tile {
-    background: #34495e;
-}
+
+
+/* =========================================
+   ERROR BOX
+========================================= */
 
 .error-box {
+    position: fixed;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
     background: #e74c3c;
     color: white;
     padding: 10px 15px;
@@ -156,4 +492,10 @@
     margin: 15px auto;
     width: fit-content;
     font-weight: bold;
+    z-index:2000;
+}
+
+
+hr{
+    border: 1px solid var(--border-color);
 }

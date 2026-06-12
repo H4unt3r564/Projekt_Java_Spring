@@ -1,13 +1,14 @@
 body{
     margin:0;
     overflow:hidden;
-    font-family:Georgia, serif;
 }
 
 .world{
 
     width:100vw;
-    height:100vh;
+    height:calc(100vh - 80px);
+
+    margin-top:80px;
 
     overflow:hidden;
 
@@ -259,4 +260,140 @@ body{
         filter:
                 drop-shadow(0 0 4px #ff77dd);
     }
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+#header{
+    position: fixed;
+    top:0;
+    width:100%;
+    height:80px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:1001;
+
+    background:
+            linear-gradient(
+                    #5a3820,
+                    #4b2e18
+            );
+
+    color:#ead8b0;
+
+    border-bottom:
+            3px solid #b28b5c;
+
+    box-shadow:
+            0 4px 15px rgba(0,0,0,.4);
+}
+
+#village-player-info{
+    font-size:1.3em;
+    margin-right:50px;
+}
+
+/* SIDEBAR */
+
+.menu-btn{
+    background:none;
+    border:none;
+
+    width:60px;
+    height:60px;
+
+    margin-left:30px;
+
+    color:#ead8b0;
+
+    font-size:30px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.menu-btn:hover{
+    transform:scale(1.1);
+}
+
+.sidebar{
+    position:fixed;
+
+    top:0;
+    left:-320px;
+
+    width:320px;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    background:#4b2e18;
+
+    transition:.3s;
+
+    z-index:2000;
+
+    box-shadow:
+            5px 0 20px rgba(0,0,0,.4);
+}
+
+.sidebar.open{
+    left:0;
+}
+
+.sidebar-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:25px;
+
+    color:#ead8b0;
+
+    font-size:24px;
+    font-weight:bold;
+
+    border-bottom:
+            1px solid rgba(255,255,255,.15);
+}
+
+.sidebar a{
+    padding:18px 25px;
+
+    color:#ead8b0;
+
+    text-decoration:none;
+
+    border-bottom:
+            1px solid rgba(255,255,255,.15);
+
+    transition:.25s;
+
+    font-size:17px;
+}
+
+.sidebar a:hover{
+    background:#6d4828;
+    padding-left:35px;
+}
+
+#sidebar_close{
+    width:40px;
+    height:40px;
+
+    background:none;
+    border:none;
+
+    color:#ead8b0;
+
+    font-size:18px;
+
+    cursor:pointer;
 }

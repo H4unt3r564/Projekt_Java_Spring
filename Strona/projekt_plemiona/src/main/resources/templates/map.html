@@ -7,10 +7,40 @@
     <title>Mapa</title>
 
     <link rel="stylesheet" th:href="@{/css/map.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 
 </head>
 
 <body>
+
+<div id="header">
+
+    <button id="menuBtn" class="menu-btn">
+        ☰
+    </button>
+
+    <div id="sidebar" class="sidebar">
+
+        <div class="sidebar-header">
+            Menu
+            <button id="sidebar_close">✖</button>
+        </div>
+
+        <a href="/wioska">Wioska</a>
+        <a href="/attack-search">Atak</a>
+        <a href="/units">Jednostki</a>
+        <a href="/map">Mapa</a>
+        <a href="/trade">Handel</a>
+        <a href="/reports">Raporty</a>
+        <a href="/login">Wyloguj</a>
+
+    </div>
+
+    <div id="village-player-info">
+        Mapa
+    </div>
+
+</div>
 
 <button id="centerBtn">
 
@@ -254,6 +284,25 @@
 </script>
 
 </body>
+
+<script>
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    document
+        .getElementById("menuBtn")
+        .addEventListener("click", () => {
+            sidebar.classList.add("open");
+        });
+
+    document
+        .getElementById("sidebar_close")
+        .addEventListener("click", () => {
+            sidebar.classList.remove("open");
+        });
+
+</script>
 
 </html>
 ```

@@ -1,126 +1,93 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Military Center</title>
-
-    <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f1e8;
-            margin: 30px;
-            color: #2d2d2d;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        h2 {
-            margin-top: 35px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            margin-bottom: 25px;
-        }
-
-        th {
-            background: #7d5a3a;
-            color: white;
-            padding: 10px;
-        }
-
-        td {
-            border: 1px solid #d5d5d5;
-            padding: 8px;
-            text-align: center;
-        }
-
-        tr:nth-child(even) {
-            background: #f8f8f8;
-        }
-
-        input[type="number"] {
-            width: 80px;
-            padding: 6px;
-            border: 1px solid #aaa;
-            border-radius: 4px;
-        }
-
-        button {
-            background: #4a8f3d;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background: #3b742f;
-        }
-
-        .box {
-            background: white;
-            padding: 15px;
-            border: 1px solid #ccc;
-            margin-bottom: 25px;
-        }
-
-        .resources {
-            display: flex;
-            gap: 20px;
-            font-weight: bold;
-        }
-
-    </style>
-
+    <title>Centrum Szkolenia</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/units.css}">
 </head>
 <body>
 
-<h1>Military Center</h1>
+<div id="header">
 
-<div class="box">
+    <button id="menuBtn" class="menu-btn">
+        ☰
+    </button>
 
-    <div class="resources">
+    <div id="sidebar" class="sidebar">
 
-        <span>
-            🌲 Wood:
-            <span th:text="${village.wood}"></span>
-        </span>
+        <div class="sidebar-header">
+            Menu
+            <button id="sidebar_close">✖</button>
+        </div>
 
-        <span>
-            🧱 Clay:
-            <span th:text="${village.clay}"></span>
-        </span>
+        <a href="/wioska">Wioska</a>
+        <a href="/attack-search">Atak</a>
+        <a href="/units">Jednostki</a>
+        <a href="/map">Mapa</a>
+        <a href="/trade">Handel</a>
+        <a href="/reports">Raporty</a>
+        <a href="/login">Wyloguj</a>
 
-        <span>
-            ⛓ Iron:
-            <span th:text="${village.iron}"></span>
-        </span>
+    </div>
+
+    <div id="village-player-info">
+        Centrum Szkolenia
+    </div>
+
+    <div class="resources-bar">
+
+        <div class="resource">
+            🪵 Drewno:
+            <span id="wood"
+                  th:data-value="${village.wood}"
+                  th:data-rate="${woodPerHour}"
+                  th:data-max="${maxStorage}"
+                  th:data-last="${village.lastUpdate}"
+                  th:text="${village.wood}">
+            </span>
+        </div>
+
+        <div class="resource">
+            🧱 Glina:
+            <span id="clay"
+                  th:data-value="${village.clay}"
+                  th:data-rate="${clayPerHour}"
+                  th:data-max="${maxStorage}"
+                  th:data-last="${village.lastUpdate}"
+                  th:text="${village.clay}">
+            </span>
+        </div>
+
+        <div class="resource">
+            ⛓️ Żelazo:
+            <span id="iron"
+                  th:data-value="${village.iron}"
+                  th:data-rate="${ironPerHour}"
+                  th:data-max="${maxStorage}"
+                  th:data-last="${village.lastUpdate}"
+                  th:text="${village.iron}">
+            </span>
+        </div>
 
     </div>
 
 </div>
 
-<h2>Your Army</h2>
+<h1>Centrum Szkolenia</h1>
+
+<h2>Twoja Armia</h2>
 
 <table>
 
     <tr>
-        <th>Unit</th>
-        <th>Amount</th>
+        <th>Jednostka</th>
+        <th>Liczba</th>
     </tr>
 
     <tr th:each="unit : ${units}">
 
         <td th:text="${unit.unitType.codeName}">
-            spear
+            pikinier
         </td>
 
         <td th:text="${unit.amount}">
@@ -131,22 +98,22 @@
 
 </table>
 
-<h2>Recruit Units</h2>
+<h2>Rekrutacja Jednostek</h2>
 
 <table>
 
     <tr>
-        <th>Unit</th>
-        <th>Wood</th>
-        <th>Clay</th>
-        <th>Iron</th>
-        <th>Barracks Level</th>
-        <th>Amount</th>
-        <th>Action</th>
+        <th>Jednostka</th>
+        <th>Drewno</th>
+        <th>Glina</th>
+        <th>Żelazo</th>
+        <th>Poziom Koszar</th>
+        <th>Liczba</th>
+        <th>Akcja</th>
     </tr>
 
     <tr>
-        <td>Spear</td>
+        <td>Pikinier</td>
         <td>50</td>
         <td>30</td>
         <td>10</td>
@@ -157,13 +124,13 @@
                 <input type="number" name="amount" value="1" min="1">
         </td>
         <td>
-            <button type="submit">Recruit</button>
+            <button type="submit">Rekrutuj</button>
             </form>
         </td>
     </tr>
 
     <tr>
-        <td>Sword</td>
+        <td>Miecznik</td>
         <td>30</td>
         <td>30</td>
         <td>70</td>
@@ -174,13 +141,13 @@
                 <input type="number" name="amount" value="1" min="1">
         </td>
         <td>
-            <button type="submit">Recruit</button>
+            <button type="submit">Rekrutuj</button>
             </form>
         </td>
     </tr>
 
     <tr>
-        <td>Axe</td>
+        <td>Topornik</td>
         <td>60</td>
         <td>30</td>
         <td>40</td>
@@ -191,13 +158,13 @@
                 <input type="number" name="amount" value="1" min="1">
         </td>
         <td>
-            <button type="submit">Recruit</button>
+            <button type="submit">Rekrutuj</button>
             </form>
         </td>
     </tr>
 
     <tr>
-        <td>Archer</td>
+        <td>Łucznik</td>
         <td>80</td>
         <td>50</td>
         <td>20</td>
@@ -208,13 +175,13 @@
                 <input type="number" name="amount" value="1" min="1">
         </td>
         <td>
-            <button type="submit">Recruit</button>
+            <button type="submit">Rekrutuj</button>
             </form>
         </td>
     </tr>
 
     <tr>
-        <td>Light Cavalry</td>
+        <td>Lekka Kawaleria</td>
         <td>125</td>
         <td>100</td>
         <td>250</td>
@@ -225,13 +192,13 @@
                 <input type="number" name="amount" value="1" min="1">
         </td>
         <td>
-            <button type="submit">Recruit</button>
+            <button type="submit">Rekrutuj</button>
             </form>
         </td>
     </tr>
 
     <tr>
-        <td>Heavy Cavalry</td>
+        <td>Ciężka Kawaleria</td>
         <td>200</td>
         <td>150</td>
         <td>600</td>
@@ -242,13 +209,13 @@
                 <input type="number" name="amount" value="1" min="1">
         </td>
         <td>
-            <button type="submit">Recruit</button>
+            <button type="submit">Rekrutuj</button>
             </form>
         </td>
     </tr>
 
     <tr>
-        <td>Ram</td>
+        <td>Taran</td>
         <td>300</td>
         <td>250</td>
         <td>200</td>
@@ -259,13 +226,13 @@
                 <input type="number" name="amount" value="1" min="1">
         </td>
         <td>
-            <button type="submit">Recruit</button>
+            <button type="submit">Rekrutuj</button>
             </form>
         </td>
     </tr>
 
     <tr>
-        <td>Catapult</td>
+        <td>Katapulta</td>
         <td>320</td>
         <td>300</td>
         <td>250</td>
@@ -276,27 +243,27 @@
                 <input type="number" name="amount" value="1" min="1">
         </td>
         <td>
-            <button type="submit">Recruit</button>
+            <button type="submit">Rekrutuj</button>
             </form>
         </td>
     </tr>
 
 </table>
 
-<h2>Recruitment Queue</h2>
+<h2>Kolejka Rekrutacji</h2>
 
 <table>
 
     <tr>
-        <th>Unit</th>
-        <th>Amount</th>
-        <th>Ready At</th>
+        <th>Jednostka</th>
+        <th>Liczba</th>
+        <th>Gotowe O</th>
     </tr>
 
     <tr th:each="q : ${queue}">
 
         <td th:text="${q.unitType.codeName}">
-            spear
+            pikinier
         </td>
 
         <td th:text="${q.amount}">
@@ -310,6 +277,91 @@
     </tr>
 
 </table>
+
+<script>
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    document
+        .getElementById("menuBtn")
+        .addEventListener("click", () => {
+
+            sidebar.classList.add("open");
+        });
+
+    document
+        .getElementById("sidebar_close")
+        .addEventListener("click", () => {
+
+            sidebar.classList.remove("open");
+        });
+
+</script>
+
+<script>
+
+    function createResource(id) {
+
+        const el = document.getElementById(id);
+
+        return {
+            el: el,
+            value: Number(el.dataset.value),
+            rate: Number(el.dataset.rate),
+            max: Number(el.dataset.max),
+            last: new Date(el.dataset.last).getTime()
+        };
+    }
+
+    function calculate(resource) {
+
+        const now = Date.now();
+
+        const elapsedSeconds =
+            (now - resource.last) / 1000;
+
+        let value =
+            resource.value
+            + (
+                resource.rate
+                * elapsedSeconds
+                / 3600
+            );
+
+        if (value > resource.max) {
+            value = resource.max;
+        }
+
+        return value;
+    }
+
+    function render(resource) {
+
+        resource.el.innerText =
+            Math.floor(
+                calculate(resource)
+            );
+    }
+
+    const wood =
+        createResource("wood");
+
+    const clay =
+        createResource("clay");
+
+    const iron =
+        createResource("iron");
+
+    setInterval(() => {
+
+        render(wood);
+        render(clay);
+        render(iron);
+
+    }, 1000);
+
+</script>
 
 </body>
 </html>

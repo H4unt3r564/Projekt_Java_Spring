@@ -1,58 +1,130 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Reports</title>
+    <meta charset="UTF-8">
+    <title>Raporty</title>
+
+    <link rel="stylesheet" th:href="@{/css/reports.css}">
 </head>
 <body>
 
-<h1>Reports</h1>
+<div id="header">
 
-<div th:each="report : ${reports}">
+    <button id="menu_btn" class="menu-btn">
+        ☰
+    </button>
 
-    <hr>
+    <div id="village-player-info">
+        Raporty
+    </div>
 
-    <p>
-        <b>Type:</b>
-        <span th:text="${report.type}"></span>
-    </p>
-
-    <p th:text="${report.contentJson}">
-    </p>
-
-    <form
-            th:if="${report.type == 'TRADE_OFFER'
-                and #strings.contains(report.contentJson,'STATUS=PENDING')}"
-            action="/trade/accept"
-            method="post">
-
-        <input
-                type="hidden"
-                name="reportId"
-                th:value="${report.reportId}">
-
-        <button type="submit">
-            Accept
-        </button>
-
-    </form>
-
-    <form
-            th:if="${report.type == 'TRADE_OFFER'
-                and #strings.contains(report.contentJson,'STATUS=PENDING')}"
-            action="/trade/reject"
-            method="post">
-
-        <input
-                type="hidden"
-                name="reportId"
-                th:value="${report.reportId}">
-
-        <button type="submit">
-            Reject
-        </button>
-
-    </form>
 </div>
+
+<div id="sidebar" class="sidebar">
+
+    <div class="sidebar-header">
+        Menu
+        <button id="sidebar_close">✖</button>
+    </div>
+
+    <a href="/wioska">Wioska</a>
+    <a href="/attack-search">Atak</a>
+    <a href="/units">Jednostki</a>
+    <a href="/map">Mapa</a>
+    <a href="/trade">Handel</a>
+    <a href="/reports">Raporty</a>
+    <a href="/login">Wyloguj</a>
+
+</div>
+
+<div class="reports-container">
+
+    <h1>📜 Raporty</h1>
+
+    <div th:each="report : ${reports}" class="report">
+
+        <div class="report-type"
+             th:text="${report.type}">
+        </div>
+
+        <div class="report-content">
+
+            <div th:each="line : ${#strings.arraySplit(report.contentJson,';')}">
+
+                <span th:text="${line}"></span>
+
+            </div>
+
+        </div>
+
+        <div class="report-actions">
+
+            <form
+                    th:if="${report.type == 'TRADE_OFFER'
+                    and #strings.contains(report.contentJson,'STATUS=PENDING')}"
+                    action="/trade/accept"
+                    method="post">
+
+                <input
+                        type="hidden"
+                        name="reportId"
+                        th:value="${report.reportId}">
+
+                <button class="accept-btn"
+                        type="submit">
+
+                    Akceptuj
+
+                </button>
+
+            </form>
+
+            <form
+                    th:if="${report.type == 'TRADE_OFFER'
+                    and #strings.contains(report.contentJson,'STATUS=PENDING')}"
+                    action="/trade/reject"
+                    method="post">
+
+                <input
+                        type="hidden"
+                        name="reportId"
+                        th:value="${report.reportId}">
+
+                <button class="reject-btn"
+                        type="submit">
+
+                    Odrzuć
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    document
+        .getElementById("menu_btn")
+        .addEventListener("click", () => {
+
+            sidebar.classList.add("open");
+        });
+
+    document
+        .getElementById("sidebar_close")
+        .addEventListener("click", () => {
+
+            sidebar.classList.remove("open");
+        });
+
+</script>
 
 </body>
 </html>

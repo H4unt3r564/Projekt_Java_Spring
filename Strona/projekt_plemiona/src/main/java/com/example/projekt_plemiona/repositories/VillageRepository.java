@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.*;
 
 public interface VillageRepository extends JpaRepository<Village, Long> {
-    List<Village> findByPlayer_PlayerId(Long playerId);
+    Optional<Village> findByPlayer_PlayerId(Long playerId);
 
-    List<Village> findAllByPlayer_PlayerId(Long playerId);
+    Optional<Village> findAllByPlayer_PlayerId(Long playerId);
 
     Optional<Village> findFirstByPlayer_PlayerId(Long playerId);
 
