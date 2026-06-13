@@ -4,6 +4,7 @@ import com.example.projekt_plemiona.models.*;
 import com.example.projekt_plemiona.repositories.*;
 import com.example.projekt_plemiona.services.UserService;
 import org.antlr.v4.runtime.misc.LogManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.example.projekt_plemiona.dto.RecruitRequest;
 import com.example.projekt_plemiona.repositories.UnitTypeRepository;
@@ -89,6 +90,7 @@ public class VillageApiController {
 
 
     @PostMapping("/recruit")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public UnitRecruitmentQueue recruit(
             @RequestBody RecruitRequest request
     ) {

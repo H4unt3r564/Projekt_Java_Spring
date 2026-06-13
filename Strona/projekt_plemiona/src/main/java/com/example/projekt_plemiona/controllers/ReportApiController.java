@@ -4,6 +4,7 @@ import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Report;
 import com.example.projekt_plemiona.repositories.ReportRepository;
 import com.example.projekt_plemiona.services.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class ReportApiController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Report createReport(
             @RequestBody Report report
     ) {

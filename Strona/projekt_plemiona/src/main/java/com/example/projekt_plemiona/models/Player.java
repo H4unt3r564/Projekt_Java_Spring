@@ -36,4 +36,7 @@ public class Player {
     @Column(name = "JOINED_AT")
     private LocalDateTime joinedAt;
 
+    @Column(name = "ROLE")
+    private String role;
+
 }

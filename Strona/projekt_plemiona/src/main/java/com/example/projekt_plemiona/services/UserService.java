@@ -58,9 +58,8 @@ public class UserService {
         player.setUsername(username);
         player.setEmail(email);
         player.setPasswordHash(passwordEncoder.encode(password));
-
-        // <-- TO NAPRAWIA BŁĄD
         player.setIsTribeLeader(0);
+        player.setRole("ROLE_PLAYER");
 
         playerRepository.save(player);
 
