@@ -99,6 +99,38 @@
 
             </form>
 
+            <form
+                    th:if="${report.type == 'TRIBE_INVITE'}"
+                    action="/tribe/acceptInvite"
+                    method="post">
+
+                <input
+                        type="hidden"
+                        name="reportId"
+                        th:value="${report.reportId}">
+
+                <button type="submit">
+                    Dołącz
+                </button>
+
+            </form>
+
+            <form
+                    th:if="${report.type == 'TRIBE_INVITE'}"
+                    action="/tribe/rejectInvite"
+                    method="post">
+
+                <input
+                        type="hidden"
+                        name="reportId"
+                        th:value="${report.reportId}">
+
+                <button type="submit">
+                    Odrzuć
+                </button>
+
+            </form>
+
         </div>
 
     </div>

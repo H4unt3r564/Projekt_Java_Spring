@@ -7,6 +7,27 @@
 
 <h1>Członkowie plemienia</h1>
 
+<h3>Zaproś gracza</h3>
+
+<form action="/tribe/invite" method="post">
+
+    <input
+            type="hidden"
+            name="tribeId"
+            th:value="${tribeId}">
+
+    <input
+            type="text"
+            name="username"
+            placeholder="Nick gracza"
+            required>
+
+    <button type="submit">
+        Zaproś
+    </button>
+
+</form>
+
 <table border="1">
 
     <tr>
