@@ -1,10 +1,13 @@
 package com.example.projekt_plemiona.controllers;
 
 import com.example.projekt_plemiona.models.Player;
+import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.repositories.PlayerRepository;
 import com.example.projekt_plemiona.repositories.ReportRepository;
+import com.example.projekt_plemiona.services.ResourceService;
 import com.example.projekt_plemiona.services.TradeService;
 import com.example.projekt_plemiona.services.UserService;
+import com.example.projekt_plemiona.services.VillageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +19,23 @@ public class TradeController {
     private final UserService userService;
     private final TradeService tradeService;
     private final PlayerRepository playerRepository;
+    private final VillageService villageService;
+    private final ResourceService resourceService;
 
     public TradeController(
             ReportRepository reportRepository,
             UserService userService,
             TradeService tradeService,
-            PlayerRepository playerRepository
+            PlayerRepository playerRepository,
+            ResourceService resourceService,
+            VillageService villageService
     ) {
         this.reportRepository = reportRepository;
         this.userService = userService;
         this.tradeService = tradeService;
         this.playerRepository = playerRepository;
+        this.resourceService = resourceService;
+        this.villageService = villageService;
     }
 
     @GetMapping("/trade")
@@ -58,9 +67,42 @@ public class TradeController {
             Model model
     ) {
 
+        Player player =
+                userService.getCurrentPlayer();
+
+        Village village =
+                villageService.getPlayerVillage(
+                        player.getPlayerId()
+                );
+
         model.addAttribute(
                 "receiverId",
                 receiverId
+        );
+
+        model.addAttribute(
+                "village",
+                village
+        );
+
+        model.addAttribute(
+                "woodPerHour",
+                resourceService.getWoodPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "clayPerHour",
+                resourceService.getClayPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "ironPerHour",
+                resourceService.getIronPerHour(village.getVillageId())
+        );
+
+        model.addAttribute(
+                "maxStorage",
+                resourceService.getMaxStorage(village.getVillageId())
         );
 
         return "trade";

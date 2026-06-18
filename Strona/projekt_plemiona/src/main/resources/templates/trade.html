@@ -1,240 +1,345 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Handel</title>
 
-    <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Trade</title>
-    </head>
-    <body>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/trade.css}">
+</head>
+<body>
 
-    <h1>Create Trade Offer</h1>
+<div id="header">
+
+    <button id="menuBtn" class="menu-btn">
+        ☰
+    </button>
+
+    <div id="sidebar" class="sidebar">
+
+        <div class="sidebar-header">
+            Menu
+            <button id="sidebar_close">✖</button>
+        </div>
+
+        <a href="/wioska">Wioska</a>
+        <a href="/attack-search">Atak</a>
+        <a href="/units">Jednostki</a>
+        <a href="/map">Mapa</a>
+        <a href="/trade">Handel</a>
+        <a href="/reports">Raporty</a>
+        <a href="/login">Wyloguj</a>
+
+    </div>
+
+    <div id="village-player-info">
+        Handel
+    </div>
+
+    <div class="resources-bar">
+
+        <div class="resource">
+            🪵 Drewno:
+            <span id="wood"
+                  th:data-value="${village.wood}"
+                  th:data-rate="${woodPerHour}"
+                  th:data-max="${maxStorage}"
+                  th:data-last="${village.lastUpdate}"
+                  th:text="${village.wood}">
+            </span>
+        </div>
+
+        <div class="resource">
+            🧱 Glina:
+            <span id="clay"
+                  th:data-value="${village.clay}"
+                  th:data-rate="${clayPerHour}"
+                  th:data-max="${maxStorage}"
+                  th:data-last="${village.lastUpdate}"
+                  th:text="${village.clay}">
+            </span>
+        </div>
+
+        <div class="resource">
+            ⛓️ Żelazo:
+            <span id="iron"
+                  th:data-value="${village.iron}"
+                  th:data-rate="${ironPerHour}"
+                  th:data-max="${maxStorage}"
+                  th:data-last="${village.lastUpdate}"
+                  th:text="${village.iron}">
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="trade-container">
+
+    <h1>⚖ Handel ⚖</h1>
+
+    <p class="subtitle">
+        Utwórz ofertę handlową
+    </p>
 
     <form action="/trade/send" method="post">
 
-        ```
         <input type="hidden"
                name="receiverId"
                th:value="${receiverId}">
 
-        <hr>
+        <div class="trade-sections">
 
-        <h2>I Offer</h2>
+            <!-- OFERUJĘ -->
 
-        <h3>Resources</h3>
+            <div class="trade-box">
 
-        <label>
-            Wood:
-            <input type="number"
-                   name="offerWood"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <h2>Oferuję</h2>
 
-        <label>
-            Clay:
-            <input type="number"
-                   name="offerClay"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <h3>Surowce</h3>
 
-        <label>
-            Iron:
-            <input type="number"
-                   name="offerIron"
-                   value="0"
-                   min="0">
-        </label>
+                <div class="field">
+                    <label>🪵 Drewno</label>
+                    <input type="number" name="offerWood" value="0" min="0">
+                </div>
 
-        <h3>Units</h3>
+                <div class="field">
+                    <label>🧱 Glina</label>
+                    <input type="number" name="offerClay" value="0" min="0">
+                </div>
 
-        <label>
-            Spear:
-            <input type="number"
-                   name="offerSpear"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>⛓️ Żelazo</label>
+                    <input type="number" name="offerIron" value="0" min="0">
+                </div>
 
-        <label>
-            Sword:
-            <input type="number"
-                   name="offerSword"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <h3>Jednostki</h3>
 
-        <label>
-            Axe:
-            <input type="number"
-                   name="offerAxe"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>Włócznik</label>
+                    <input type="number" name="offerSpear" value="0" min="0">
+                </div>
 
-        <label>
-            Archer:
-            <input type="number"
-                   name="offerArcher"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>Miecznik</label>
+                    <input type="number" name="offerSword" value="0" min="0">
+                </div>
 
-        <label>
-            Light Cavalry:
-            <input type="number"
-                   name="offerLight"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>Topornik</label>
+                    <input type="number" name="offerAxe" value="0" min="0">
+                </div>
 
-        <label>
-            Heavy Cavalry:
-            <input type="number"
-                   name="offerHeavy"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>Łucznik</label>
+                    <input type="number" name="offerArcher" value="0" min="0">
+                </div>
 
-        <label>
-            Ram:
-            <input type="number"
-                   name="offerRam"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>Lekka Kawaleria</label>
+                    <input type="number" name="offerLight" value="0" min="0">
+                </div>
 
-        <label>
-            Catapult:
-            <input type="number"
-                   name="offerCatapult"
-                   value="0"
-                   min="0">
-        </label>
+                <div class="field">
+                    <label>Ciężka Kawaleria</label>
+                    <input type="number" name="offerHeavy" value="0" min="0">
+                </div>
 
-        <hr>
+                <div class="field">
+                    <label>Taran</label>
+                    <input type="number" name="offerRam" value="0" min="0">
+                </div>
 
-        <h2>I Want</h2>
+                <div class="field">
+                    <label>Katapulta</label>
+                    <input type="number" name="offerCatapult" value="0" min="0">
+                </div>
 
-        <h3>Resources</h3>
+                <p id="offerTotal">
+                    Łącznie oferujesz: 0
+                </p>
 
-        <label>
-            Wood:
-            <input type="number"
-                   name="requestWood"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+            </div>
 
-        <label>
-            Clay:
-            <input type="number"
-                   name="requestClay"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+            <!-- CHCĘ OTRZYMAĆ -->
 
-        <label>
-            Iron:
-            <input type="number"
-                   name="requestIron"
-                   value="0"
-                   min="0">
-        </label>
+            <div class="trade-box">
 
-        <h3>Units</h3>
+                <h2>Chcę otrzymać</h2>
 
-        <label>
-            Spear:
-            <input type="number"
-                   name="requestSpear"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <h3>Surowce</h3>
 
-        <label>
-            Sword:
-            <input type="number"
-                   name="requestSword"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>🪵 Drewno</label>
+                    <input type="number" name="requestWood" value="0" min="0">
+                </div>
 
-        <label>
-            Axe:
-            <input type="number"
-                   name="requestAxe"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>🧱 Glina</label>
+                    <input type="number" name="requestClay" value="0" min="0">
+                </div>
 
-        <label>
-            Archer:
-            <input type="number"
-                   name="requestArcher"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>⛓️ Żelazo</label>
+                    <input type="number" name="requestIron" value="0" min="0">
+                </div>
 
-        <label>
-            Light Cavalry:
-            <input type="number"
-                   name="requestLight"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <h3>Jednostki</h3>
 
-        <label>
-            Heavy Cavalry:
-            <input type="number"
-                   name="requestHeavy"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>Włócznik</label>
+                    <input type="number" name="requestSpear" value="0" min="0">
+                </div>
 
-        <label>
-            Ram:
-            <input type="number"
-                   name="requestRam"
-                   value="0"
-                   min="0">
-        </label>
-        <br><br>
+                <div class="field">
+                    <label>Miecznik</label>
+                    <input type="number" name="requestSword" value="0" min="0">
+                </div>
 
-        <label>
-            Catapult:
-            <input type="number"
-                   name="requestCatapult"
-                   value="0"
-                   min="0">
-        </label>
+                <div class="field">
+                    <label>Topornik</label>
+                    <input type="number" name="requestAxe" value="0" min="0">
+                </div>
 
-        <hr>
+                <div class="field">
+                    <label>Łucznik</label>
+                    <input type="number" name="requestArcher" value="0" min="0">
+                </div>
 
-        <button type="submit">
-            Send Offer
-        </button>
-        ```
+                <div class="field">
+                    <label>Lekka Kawaleria</label>
+                    <input type="number" name="requestLight" value="0" min="0">
+                </div>
+
+                <div class="field">
+                    <label>Ciężka Kawaleria</label>
+                    <input type="number" name="requestHeavy" value="0" min="0">
+                </div>
+
+                <div class="field">
+                    <label>Taran</label>
+                    <input type="number" name="requestRam" value="0" min="0">
+                </div>
+
+                <div class="field">
+                    <label>Katapulta</label>
+                    <input type="number" name="requestCatapult" value="0" min="0">
+                </div>
+
+                <p id="requestTotal">
+                    Łącznie żądasz: 0
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="submit-container">
+            <button type="submit">
+                Wyślij ofertę
+            </button>
+        </div>
 
     </form>
-    </body>
 
+</div>
 
-    </html>
+<script>
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    document
+        .getElementById("menuBtn")
+        .addEventListener("click", () => {
+            sidebar.classList.add("open");
+        });
+
+    document
+        .getElementById("sidebar_close")
+        .addEventListener("click", () => {
+            sidebar.classList.remove("open");
+        });
+
+    function updateTotals() {
+
+        const offer =
+            Number(document.querySelector('[name="offerWood"]').value) +
+            Number(document.querySelector('[name="offerClay"]').value) +
+            Number(document.querySelector('[name="offerIron"]').value);
+
+        const request =
+            Number(document.querySelector('[name="requestWood"]').value) +
+            Number(document.querySelector('[name="requestClay"]').value) +
+            Number(document.querySelector('[name="requestIron"]').value);
+
+        document.getElementById("offerTotal").innerText =
+            "Łącznie oferujesz: " + offer;
+
+        document.getElementById("requestTotal").innerText =
+            "Łącznie żądasz: " + request;
+    }
+
+    document
+        .querySelectorAll('input[type="number"]')
+        .forEach(input => {
+            input.addEventListener("input", updateTotals);
+        });
+
+    updateTotals();
+
+    function createResource(id) {
+
+        const el = document.getElementById(id);
+
+        return {
+            el: el,
+            value: Number(el.dataset.value),
+            rate: Number(el.dataset.rate),
+            max: Number(el.dataset.max),
+            last: new Date(el.dataset.last).getTime()
+        };
+    }
+
+    function calculate(resource) {
+
+        const now = Date.now();
+
+        const elapsedSeconds =
+            (now - resource.last) / 1000;
+
+        let value =
+            resource.value +
+            (resource.rate * elapsedSeconds / 3600);
+
+        if (value > resource.max) {
+            value = resource.max;
+        }
+
+        return value;
+    }
+
+    function render(resource) {
+
+        resource.el.innerText =
+            Math.floor(calculate(resource));
+    }
+
+    const wood = createResource("wood");
+    const clay = createResource("clay");
+    const iron = createResource("iron");
+
+    setInterval(() => {
+
+        render(wood);
+        render(clay);
+        render(iron);
+
+    }, 1000);
+
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,308 @@
+:root{
+    --primary-bg-color: oklch(0.478 0.083 73.592);
+    --secondary-bg-color: oklch(25% .04 45);
+    --primary-font-color: oklch(35% .07 45);
+    --border-color: oklch(72% .06 60);
+}
+
+/* =========================================
+   BODY
+========================================= */
+
+body{
+    margin:0;
+    min-height:100vh;
+    padding-top:110px;
+
+    font-family:Georgia, serif;
+
+    background-image:url("tloAtak.png");
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+#header{
+    position:fixed;
+    top:0;
+    width:100%;
+    height:80px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 20px;
+    box-sizing:border-box;
+
+    background:
+            linear-gradient(
+                    #5a3820,
+                    #4b2e18
+            );
+
+    border-bottom:3px solid #b28b5c;
+
+    color:#ead8b0;
+
+    z-index:1001;
+}
+
+#village-player-info{
+    position:absolute;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:1.3em;
+}
+
+/* =========================================
+   RESOURCES BAR
+========================================= */
+
+.resources-bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.resources-bar .resource{
+
+    width:110px;
+    height:50px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    background:#ddc486;
+
+    border:2px solid #6d4c2f;
+
+    border-radius:8px;
+
+    color:#2b1b11;
+
+    font-size:15px;
+
+    font-family:"Times New Roman";
+
+    box-shadow:
+            0 2px 8px rgba(0,0,0,.25);
+}
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.trade-container{
+
+    width:1100px;
+    max-width:95vw;
+
+    margin:0 auto 40px;
+
+    padding:35px;
+
+    background:rgba(234,216,176,.97);
+
+    border:4px solid #6d4c2f;
+
+    border-radius:20px;
+
+    box-shadow:
+            0 10px 30px rgba(0,0,0,.5);
+}
+
+.trade-container h1{
+
+    margin-top:0;
+
+    text-align:center;
+
+    color:#2b1b11;
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:#5a3820;
+
+    margin-bottom:30px;
+}
+
+/* =========================================
+   PANELS
+========================================= */
+
+.trade-sections{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:25px;
+}
+
+.trade-box{
+
+    background:#f6edd8;
+
+    padding:25px;
+
+    border:3px solid #6d4c2f;
+
+    border-radius:15px;
+}
+
+.trade-box h2{
+
+    margin-top:0;
+
+    text-align:center;
+
+    color:#2b1b11;
+}
+
+.trade-box h3{
+
+    color:#5a3820;
+
+    border-bottom:1px solid #b28b5c;
+
+    padding-bottom:5px;
+}
+
+/* =========================================
+   FIELDS
+========================================= */
+
+.field{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:12px;
+}
+
+.field label{
+
+    font-weight:bold;
+
+    color:#2b1b11;
+}
+
+input[type="number"]{
+
+    width:120px;
+
+    padding:8px;
+
+    background:#fff8e8;
+
+    border:2px solid #6d4c2f;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    text-align:center;
+}
+
+input[type="number"]:focus{
+
+    outline:none;
+
+    border-color:#8b651d;
+
+    box-shadow:
+            0 0 8px rgba(139,101,29,.4);
+}
+
+/* =========================================
+   TOTALS
+========================================= */
+
+#offerTotal,
+#requestTotal{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    color:#5a3820;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.submit-container{
+
+    text-align:center;
+
+    margin-top:30px;
+}
+
+button[type="submit"]{
+
+    padding:15px 40px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:
+            linear-gradient(
+                    #e7c96b,
+                    #c89f2e
+            );
+
+    color:#2b1b11;
+
+    border:2px solid #8b651d;
+
+    border-radius:10px;
+
+    transition:.2s;
+}
+
+button[type="submit"]:hover{
+
+    filter:brightness(1.1);
+
+    transform:translateY(-1px);
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:900px){
+
+    .trade-sections{
+
+        grid-template-columns:1fr;
+    }
+
+    .resources-bar{
+
+        display:none;
+    }
+}
