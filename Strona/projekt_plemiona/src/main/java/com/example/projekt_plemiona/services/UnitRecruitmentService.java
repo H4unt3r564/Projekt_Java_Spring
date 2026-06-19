@@ -43,23 +43,62 @@ public class UnitRecruitmentService {
             Integer amount
     ) {
 
+        if(villageId == null) {
+
+            throw new RuntimeException(
+                    "Village not selected"
+            );
+        }
+
+        if(unitTypeId == null) {
+
+            throw new RuntimeException(
+                    "Unit type not selected"
+            );
+        }
+
+        if(amount == null || amount <= 0) {
+
+            throw new RuntimeException(
+                    "Invalid amount"
+            );
+        }
+
+        if(amount > 10000) {
+
+            throw new RuntimeException(
+                    "Too many units"
+            );
+        }
+
         Village village =
                 villageRepository
                         .findById(villageId)
-                        .orElseThrow();
+                        .orElseThrow(
+                                () -> new RuntimeException(
+                                        "Village not found"
+                                )
+                        );
 
         UnitType unitType =
                 unitTypeRepository
                         .findById(unitTypeId)
-                        .orElseThrow();
-
+                        .orElseThrow(
+                                () -> new RuntimeException(
+                                        "Unit type not found"
+                                )
+                        );
         VillageBuilding barracks =
                 villageBuildingRepository
                         .findByVillage_VillageIdAndBuildingType_TypeId(
                                 villageId,
                                 2L
                         )
-                        .orElseThrow();
+                        .orElseThrow(
+                                () -> new RuntimeException(
+                                        "Barracks not found"
+                                )
+                        );
 
         int barracksLevel =
                 barracks.getLevelNumber();

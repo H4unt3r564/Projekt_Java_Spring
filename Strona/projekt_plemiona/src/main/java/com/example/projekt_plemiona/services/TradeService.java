@@ -67,6 +67,37 @@ public class TradeService {
 
     ) {
 
+        validateOffer(
+                sender,
+                receiverId,
+
+                offerWood,
+                offerClay,
+                offerIron,
+
+                offerSpear,
+                offerSword,
+                offerAxe,
+                offerArcher,
+                offerLight,
+                offerHeavy,
+                offerRam,
+                offerCatapult,
+
+                requestWood,
+                requestClay,
+                requestIron,
+
+                requestSpear,
+                requestSword,
+                requestAxe,
+                requestArcher,
+                requestLight,
+                requestHeavy,
+                requestRam,
+                requestCatapult
+        );
+
         Village senderVillage =
                 villageRepository
                         .findAllByPlayer_PlayerId(
@@ -263,6 +294,25 @@ public class TradeService {
                 report.getContentJson();
 
 
+        if(!report.getPlayerId().equals(
+                receiver.getPlayerId()
+        )) {
+
+            throw new RuntimeException(
+                    "Brak dostępu do oferty"
+            );
+        }
+
+        if(!content.contains(
+                "STATUS=PENDING"
+        )) {
+
+            throw new RuntimeException(
+                    "Oferta została już przetworzona"
+            );
+        }
+
+
 
         Integer offerWood = getInt(content, "OFFER_WOOD");
         Integer offerClay = getInt(content, "OFFER_CLAY");
@@ -423,6 +473,16 @@ public class TradeService {
                 report.getContentJson();
 
 
+        if(!content.contains(
+                "STATUS=PENDING"
+        )) {
+
+            throw new RuntimeException(
+                    "Oferta została już przetworzona"
+            );
+        }
+
+
 
         Long villageId =
                 getLong(content, "VILLAGE");
@@ -565,6 +625,130 @@ public class TradeService {
         }
 
         return 0L;
+    }
+
+
+    private void validateOffer(
+
+            Player sender,
+            Long receiverId,
+
+            Integer offerWood,
+            Integer offerClay,
+            Integer offerIron,
+
+            Integer offerSpear,
+            Integer offerSword,
+            Integer offerAxe,
+            Integer offerArcher,
+            Integer offerLight,
+            Integer offerHeavy,
+            Integer offerRam,
+            Integer offerCatapult,
+
+            Integer requestWood,
+            Integer requestClay,
+            Integer requestIron,
+
+            Integer requestSpear,
+            Integer requestSword,
+            Integer requestAxe,
+            Integer requestArcher,
+            Integer requestLight,
+            Integer requestHeavy,
+            Integer requestRam,
+            Integer requestCatapult
+    ) {
+
+        if (sender.getPlayerId().equals(receiverId)) {
+
+            throw new RuntimeException(
+                    "Nie możesz handlować sam ze sobą"
+            );
+        }
+
+        Integer[] values = {
+
+                offerWood,
+                offerClay,
+                offerIron,
+
+                offerSpear,
+                offerSword,
+                offerAxe,
+                offerArcher,
+                offerLight,
+                offerHeavy,
+                offerRam,
+                offerCatapult,
+
+                requestWood,
+                requestClay,
+                requestIron,
+
+                requestSpear,
+                requestSword,
+                requestAxe,
+                requestArcher,
+                requestLight,
+                requestHeavy,
+                requestRam,
+                requestCatapult
+        };
+
+        for(Integer value : values) {
+
+            if(value == null || value < 0) {
+
+                throw new RuntimeException(
+                        "Nieprawidłowa wartość"
+                );
+            }
+        }
+
+        boolean somethingOffered =
+
+                offerWood > 0
+                        || offerClay > 0
+                        || offerIron > 0
+
+                        || offerSpear > 0
+                        || offerSword > 0
+                        || offerAxe > 0
+                        || offerArcher > 0
+                        || offerLight > 0
+                        || offerHeavy > 0
+                        || offerRam > 0
+                        || offerCatapult > 0;
+
+        if(!somethingOffered) {
+
+            throw new RuntimeException(
+                    "Błąd"
+            );
+        }
+
+        boolean somethingRequested =
+
+                requestWood > 0
+                        || requestClay > 0
+                        || requestIron > 0
+
+                        || requestSpear > 0
+                        || requestSword > 0
+                        || requestAxe > 0
+                        || requestArcher > 0
+                        || requestLight > 0
+                        || requestHeavy > 0
+                        || requestRam > 0
+                        || requestCatapult > 0;
+
+        if(!somethingRequested) {
+
+            throw new RuntimeException(
+                    "Musisz czegoś zażądać"
+            );
+        }
     }
 
 }

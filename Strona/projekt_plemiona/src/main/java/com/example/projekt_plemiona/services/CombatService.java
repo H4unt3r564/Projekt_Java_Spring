@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CombatService {
@@ -43,8 +45,21 @@ public class CombatService {
             List<Integer> amount
     ) {
 
+        validateAttackRequest(
+                sourceVillageId,
+                targetVillageId,
+                unitTypeId,
+                amount
+        );
+
         List<VillageUnits> attackVillage =
                 villageUnitRepository.findByVillage_VillageId(sourceVillageId);
+
+        validateAttackerUnits(
+                attackVillage,
+                unitTypeId,
+                amount
+        );
 
         List<VillageUnits> defVillage =
                 villageUnitRepository.findByVillage_VillageId(targetVillageId);
@@ -68,6 +83,8 @@ public class CombatService {
                 targetVillage
                         .getPlayer()
                         .getPlayerId();
+
+
 
         long attackPower = 0;
 
@@ -430,6 +447,130 @@ public class CombatService {
         );
 
         return result.toString();
+    }
+
+
+    private void validateAttackRequest(
+            Long sourceVillageId,
+            Long targetVillageId,
+            List<Long> unitTypeIds,
+            List<Integer> amounts
+    ) {
+
+        if (sourceVillageId == null
+                || targetVillageId == null) {
+
+            throw new IllegalArgumentException(
+                    "Village id cannot be null"
+            );
+        }
+
+        if (sourceVillageId.equals(targetVillageId)) {
+
+            throw new IllegalArgumentException(
+                    "Cannot attack own village"
+            );
+        }
+
+        if (unitTypeIds == null
+                || amounts == null) {
+
+            throw new IllegalArgumentException(
+                    "Units cannot be null"
+            );
+        }
+
+        if (unitTypeIds.isEmpty()) {
+
+            throw new IllegalArgumentException(
+                    "No units selected"
+            );
+        }
+
+        if (unitTypeIds.size() != amounts.size()) {
+
+            throw new IllegalArgumentException(
+                    "Invalid attack request"
+            );
+        }
+
+        for (Integer amount : amounts) {
+
+            if (amount == null
+                    || amount <= 0) {
+
+                throw new IllegalArgumentException(
+                        "Invalid unit amount"
+                );
+            }
+        }
+
+        for (Long unitTypeId : unitTypeIds) {
+
+            if (unitTypeId == null
+                    || unitTypeId < 1
+                    || unitTypeId > 8) {
+
+                throw new IllegalArgumentException(
+                        "Invalid unit type"
+                );
+            }
+        }
+
+        Set<Long> uniqueUnits = new HashSet<>();
+
+        for (Long unitTypeId : unitTypeIds) {
+
+            if (!uniqueUnits.add(unitTypeId)) {
+
+                throw new IllegalArgumentException(
+                        "Duplicate unit type"
+                );
+            }
+        }
+    }
+
+
+    private void validateAttackerUnits(
+            List<VillageUnits> attackVillage,
+            List<Long> unitTypeIds,
+            List<Integer> amounts
+    ) {
+
+        for (int i = 0; i < unitTypeIds.size(); i++) {
+
+            Long currentType =
+                    unitTypeIds.get(i);
+
+            Integer requestedAmount =
+                    amounts.get(i);
+
+            VillageUnits unit =
+                    attackVillage.stream()
+                            .filter(v ->
+                                    v.getUnitType()
+                                            .getUnitTypeId()
+                                            .equals(currentType))
+                            .findFirst()
+                            .orElse(null);
+
+            if (unit == null) {
+
+                throw new IllegalArgumentException(
+                        "Village does not own unit type "
+                                + currentType
+                );
+            }
+
+            if (unit.getAmount()
+                    < requestedAmount) {
+
+                throw new IllegalArgumentException(
+                        "Not enough units of type "
+                                + currentType
+                );
+            }
+        }
     }
 
 

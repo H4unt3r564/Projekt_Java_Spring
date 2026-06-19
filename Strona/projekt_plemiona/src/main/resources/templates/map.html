@@ -105,6 +105,10 @@
         ⚔ Atakuj
     </a>
 
+    <a id="tradeLink">
+        🤝 Handluj
+    </a>
+
 </div>
 
 <script th:inline="javascript">
@@ -235,6 +239,9 @@
 
                     attackLink.href =
                         "/attack?targetVillageId=" +
+                        villageId;
+                    tradeLink.href =
+                        "/trade/create?receiverId=" +
                         villageId;
                 }
             );
