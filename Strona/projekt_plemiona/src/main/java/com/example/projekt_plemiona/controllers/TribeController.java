@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Report;
 import com.example.projekt_plemiona.models.PlayerTribe;
+import com.example.projekt_plemiona.models.Tribe;
+import jakarta.transaction.Transactional;
 
 @Controller
 public class TribeController {
@@ -165,4 +167,96 @@ public class TribeController {
 
         return "redirect:/reports";
     }
+
+    @GetMapping("/tribe/create")
+    public String createTribePage() {
+
+        return "create-tribe";
+    }
+
+    @PostMapping("/tribe/create")
+    public String createTribe(
+            @RequestParam String name,
+            @RequestParam String tag
+    ) {
+
+        if (tribeRepository.existsByName(name)) {
+            return "redirect:/tribe/create";
+        }
+
+        if (tribeRepository.existsByTag(tag)) {
+            return "redirect:/tribe/create";
+        }
+
+        Player currentPlayer =
+                userService.getCurrentPlayer();
+
+        Tribe tribe = new Tribe();
+
+        tribe.setName(name);
+        tribe.setTag(tag);
+        tribe.setFounder(currentPlayer);
+
+        tribe = tribeRepository.save(tribe);
+
+        PlayerTribe member =
+                new PlayerTribe();
+
+        member.setPlayer(currentPlayer);
+        member.setTribe(tribe);
+        member.setRole("LEADER");
+
+        playerTribeRepository.save(member);
+
+        return "redirect:/tribe?tribeId="
+                + tribe.getTribeId();
+    }
+
+    @PostMapping("/tribe/leave")
+    public String leaveTribe(
+            @RequestParam Long tribeId
+    ) {
+
+        Long playerId =
+                userService
+                        .getCurrentPlayer()
+                        .getPlayerId();
+
+        PlayerTribe membership =
+                playerTribeRepository
+                        .findByPlayer_PlayerIdAndTribe_TribeId(
+                                playerId,
+                                tribeId
+                        )
+                        .orElseThrow();
+
+        playerTribeRepository.delete(
+                membership
+        );
+
+        return "redirect:/wioska";
+    }
+
+    @Transactional
+    @PostMapping("/tribe/delete")
+    public String deleteTribe(
+            @RequestParam Long tribeId
+    ) {
+
+        if (!tribeService.isCurrentPlayerLeader()) {
+            return "redirect:/tribe?tribeId=" + tribeId;
+        }
+
+        playerTribeRepository
+                .deleteByTribe_TribeId(
+                        tribeId
+                );
+
+        tribeRepository.deleteById(
+                tribeId
+        );
+
+        return "redirect:/wioska";
+    }
+
 }

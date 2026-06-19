@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Wyszukiwanie celu</title>
+    <meta charset="UTF-8">
 
-    <link rel="stylesheet" th:href="@{/css/attack-search.css}">
+    <title>Utwórz Gildię</title>
+
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/tribe.css}">
 </head>
 <body>
 
@@ -27,6 +29,7 @@
         <a href="/map">Mapa</a>
         <a href="/trade">Handel</a>
         <a href="/reports">Raporty</a>
+
         <a
                 th:if="${!hasTribe}"
                 th:href="@{/tribe/create}">
@@ -38,35 +41,66 @@
                 th:href="@{/tribe(tribeId=${tribeId})}">
             Moja gildia
         </a>
+
         <a href="/login">Wyloguj</a>
 
     </div>
 
     <div id="village-player-info">
-        Atak
+        Utwórz Gildię
     </div>
 
 </div>
 
-<div class="search-container">
+<div class="tribe-container">
 
-    <h1>⚔ Znajdź cel ataku ⚔</h1>
+    <h1>⚔️ Utwórz Gildię ⚔️</h1>
 
-    <p class="subtitle">
-        Wpisz nazwę gracza, którego chcesz zaatakować
-    </p>
+    <form
+            class="create-tribe-form"
+            action="/tribe/create"
+            method="post">
 
-    <form action="/attack/search" method="get">
+        <div class="form-group">
 
-        <input
-                type="text"
-                name="username"
-                placeholder="Nazwa gracza"
-                required>
+            <label>Nazwa gildii</label>
 
-        <button type="submit">
-            Wyszukaj
-        </button>
+            <input
+                    type="text"
+                    name="name"
+                    placeholder="Nazwa gildii"
+                    required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Tag</label>
+
+            <input
+                    type="text"
+                    name="tag"
+                    placeholder="TAG"
+                    maxlength="5"
+                    required>
+
+        </div>
+
+        <div class="buttons">
+
+            <button type="submit">
+                Utwórz gildię
+            </button>
+
+            <button
+                    type="button"
+                    onclick="location.href='/wioska'">
+
+                ← Wróć do wioski
+
+            </button>
+
+        </div>
 
     </form>
 
@@ -82,6 +116,7 @@
         .addEventListener("click", () => {
 
             sidebar.classList.add("open");
+
         });
 
     document
@@ -89,6 +124,7 @@
         .addEventListener("click", () => {
 
             sidebar.classList.remove("open");
+
         });
 
 </script>

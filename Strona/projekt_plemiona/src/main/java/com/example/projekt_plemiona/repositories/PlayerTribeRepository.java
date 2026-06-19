@@ -19,4 +19,11 @@ public interface PlayerTribeRepository
             Long playerId,
             Long tribeId
     );
+
+    Optional<PlayerTribe>
+    findByPlayer_PlayerId(
+            Long playerId
+    );
+
+    void deleteByTribe_TribeId(Long tribeId);
 }

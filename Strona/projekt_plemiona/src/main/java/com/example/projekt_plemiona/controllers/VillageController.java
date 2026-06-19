@@ -5,10 +5,7 @@ import com.example.projekt_plemiona.models.BuildingQueue;
 import com.example.projekt_plemiona.models.Player;
 import com.example.projekt_plemiona.models.Village;
 import com.example.projekt_plemiona.models.VillageBuilding;
-import com.example.projekt_plemiona.repositories.BuildingQueueRepository;
-import com.example.projekt_plemiona.repositories.PlayerRepository;
-import com.example.projekt_plemiona.repositories.VillageBuildingRepository;
-import com.example.projekt_plemiona.repositories.VillageRepository;
+import com.example.projekt_plemiona.repositories.*;
 import com.example.projekt_plemiona.services.ResourceService;
 import com.example.projekt_plemiona.services.VillageService;
 import org.springframework.security.core.Authentication;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.example.projekt_plemiona.repositories.PlayerTribeRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,13 +32,15 @@ public class VillageController {
     private final BuildingQueueRepository buildingQueueRepository;
     private final VillageService villageService;
     private final ResourceService resourceService;
+    private final PlayerTribeRepository playerTribeRepository;
 
     public VillageController(VillageRepository villageRepository,
                              PlayerRepository playerRepository,
                              VillageBuildingRepository villageBuildingRepository,
                              BuildingQueueRepository buildingQueueRepository,
                              VillageService villageService,
-                             ResourceService resourceService) {
+                             ResourceService resourceService,
+                             PlayerTribeRepository playerTribeRepository) {
 
         this.villageRepository = villageRepository;
         this.playerRepository = playerRepository;
@@ -48,6 +48,7 @@ public class VillageController {
         this.buildingQueueRepository = buildingQueueRepository;
         this.villageService = villageService;
         this.resourceService = resourceService;
+        this.playerTribeRepository = playerTribeRepository;
     }
 
     @GetMapping("/wioska")
@@ -132,6 +133,27 @@ public class VillageController {
         model.addAttribute("village", village);
         model.addAttribute("buildings", buildings);
         model.addAttribute("isOwner", isOwner);
+
+        var tribeMembership =
+                playerTribeRepository
+                        .findByPlayer_PlayerId(
+                                loggedPlayer.getPlayerId()
+                        );
+
+        model.addAttribute(
+                "hasTribe",
+                tribeMembership.isPresent()
+        );
+
+        if (tribeMembership.isPresent()) {
+
+            model.addAttribute(
+                    "tribeId",
+                    tribeMembership.get()
+                            .getTribe()
+                            .getTribeId()
+            );
+        }
 
         Map<Long, List<BuildingQueue>> finishTimes = buildingQueueRepository
                 .findAllByVillageIdOrderByFinishTimeAsc(village.getVillageId())

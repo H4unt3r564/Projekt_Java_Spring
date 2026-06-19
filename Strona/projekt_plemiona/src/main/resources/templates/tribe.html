@@ -1,77 +1,212 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Plemię</title>
+    <meta charset="UTF-8">
+
+    <title>Moja Gildia</title>
+
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/tribe.css}">
 </head>
 <body>
 
-<h1>Członkowie plemienia</h1>
+<div id="header">
 
-<h3>Zaproś gracza</h3>
-
-<form action="/tribe/invite" method="post">
-
-    <input
-            type="hidden"
-            name="tribeId"
-            th:value="${tribeId}">
-
-    <input
-            type="text"
-            name="username"
-            placeholder="Nick gracza"
-            required>
-
-    <button type="submit">
-        Zaproś
+    <button id="menuBtn" class="menu-btn">
+        ☰
     </button>
 
-</form>
+    <div id="sidebar" class="sidebar">
 
-<table border="1">
+        <div class="sidebar-header">
+            Menu
+            <button id="sidebar_close">✖</button>
+        </div>
 
-    <tr>
-        <th>Gracz</th>
-        <th>Rola</th>
-        <th>Akcja</th>
-    </tr>
+        <a href="/wioska">Wioska</a>
+        <a href="/attack-search">Atak</a>
+        <a href="/units">Jednostki</a>
+        <a href="/map">Mapa</a>
+        <a href="/trade">Handel</a>
+        <a href="/reports">Raporty</a>
 
-    <tr th:each="member : ${members}">
+        <a
+                th:if="${!hasTribe}"
+                th:href="@{/tribe/create}">
+            Utwórz gildię
+        </a>
 
-        <td th:text="${member.player.username}">
-        </td>
+        <a
+                th:if="${hasTribe}"
+                th:href="@{/tribe(tribeId=${tribeId})}">
+            Moja gildia
+        </a>
 
-        <td th:text="${member.role}">
-        </td>
+        <a href="/login">Wyloguj</a>
 
-        <td>
+    </div>
 
-            <form
-                    th:if="${leader and member.player.playerId != currentPlayerId}"
-                    action="/tribe/kick"
-                    method="post">
+    <div id="village-player-info">
+        Moja Gildia
+    </div>
 
-                <input
-                        type="hidden"
-                        name="tribeId"
-                        th:value="${tribeId}">
+</div>
 
-                <input
-                        type="hidden"
-                        name="playerId"
-                        th:value="${member.player.playerId}">
+<div class="tribe-container">
 
-                <button type="submit">
-                    Wyrzuć
-                </button>
+    <h1>⚔️ Moja Gildia ⚔️</h1>
 
-            </form>
+    <div class="top-actions">
 
-        </td>
+        <form
+                th:if="${!leader}"
+                action="/tribe/leave"
+                method="post">
 
-    </tr>
+            <input
+                    type="hidden"
+                    name="tribeId"
+                    th:value="${tribeId}">
 
-</table>
+            <button
+                    type="submit"
+                    onclick="return confirm('Na pewno opuścić gildię?');">
+
+                Opuść gildię
+
+            </button>
+
+        </form>
+
+        <form
+                th:if="${leader}"
+                action="/tribe/delete"
+                method="post">
+
+            <input
+                    type="hidden"
+                    name="tribeId"
+                    th:value="${tribeId}">
+
+            <button
+                    type="submit"
+                    onclick="return confirm('Na pewno rozwiązać gildię?');">
+
+                Rozwiąż gildię
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <h2>Zaproś gracza</h2>
+
+    <form
+            class="invite-form"
+            action="/tribe/invite"
+            method="post">
+
+        <input
+                type="hidden"
+                name="tribeId"
+                th:value="${tribeId}">
+
+        <input
+                type="text"
+                name="username"
+                placeholder="Nick gracza"
+                required>
+
+        <button type="submit">
+            Zaproś
+        </button>
+
+    </form>
+
+    <table>
+
+        <tr>
+
+            <th>Gracz</th>
+            <th>Rola</th>
+            <th>Akcja</th>
+
+        </tr>
+
+        <tr th:each="member : ${members}">
+
+            <td th:text="${member.player.username}"></td>
+
+            <td th:text="${member.role}"></td>
+
+            <td>
+
+                <form
+                        th:if="${leader and member.player.playerId != currentPlayerId}"
+                        action="/tribe/kick"
+                        method="post">
+
+                    <input
+                            type="hidden"
+                            name="tribeId"
+                            th:value="${tribeId}">
+
+                    <input
+                            type="hidden"
+                            name="playerId"
+                            th:value="${member.player.playerId}">
+
+                    <button type="submit">
+
+                        Wyrzuć
+
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    <div class="back-container">
+
+        <button
+                type="button"
+                onclick="location.href='/wioska'">
+
+            ← Wróć do wioski
+
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    document
+        .getElementById("menuBtn")
+        .addEventListener("click", () => {
+
+            sidebar.classList.add("open");
+
+        });
+
+    document
+        .getElementById("sidebar_close")
+        .addEventListener("click", () => {
+
+            sidebar.classList.remove("open");
+
+        });
+
+</script>
 
 </body>
 </html>

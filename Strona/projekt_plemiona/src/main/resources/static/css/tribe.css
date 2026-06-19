@@ -1,0 +1,195 @@
+body{
+    margin:0;
+    min-height:100vh;
+    padding-top:110px;
+
+    font-family:Georgia, serif;
+
+    background-image:url("/images/units/tłodogildii.png");
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+.tribe-container{
+
+    width:1100px;
+    max-width:95vw;
+
+    margin:0 auto 40px;
+
+    padding:35px;
+
+    background:rgba(234,216,176,.97);
+
+    border:4px solid #6d4c2f;
+
+    border-radius:20px;
+
+    box-shadow:
+            0 10px 30px rgba(0,0,0,.5);
+}
+
+h1{
+
+    margin-top:0;
+
+    text-align:center;
+
+    color:#2b1b11;
+
+    font-size:48px;
+}
+
+h2{
+
+    color:#5a3820;
+
+    margin-top:30px;
+}
+
+.top-actions{
+
+    margin-bottom:30px;
+}
+
+.invite-form{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:30px;
+}
+
+input[type="text"]{
+
+    width:300px;
+
+    padding:12px;
+
+    background:#fff8e8;
+
+    border:2px solid #6d4c2f;
+
+    border-radius:8px;
+
+    font-size:16px;
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:#f6edd8;
+}
+
+th{
+
+    background:#d8b856;
+
+    color:#2b1b11;
+
+    padding:15px;
+
+    border:1px solid #b28b5c;
+}
+
+td{
+
+    padding:15px;
+
+    border:1px solid #d2c19d;
+}
+
+tr:nth-child(even){
+
+    background:#fff8e8;
+}
+
+button{
+
+    padding:12px 20px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    background:
+            linear-gradient(
+                    #e7c96b,
+                    #c89f2e
+            );
+
+    color:#2b1b11;
+
+    border:2px solid #8b651d;
+
+    border-radius:10px;
+
+    transition:.2s;
+}
+
+button:hover{
+
+    filter:brightness(1.1);
+
+    transform:translateY(-1px);
+}
+
+.back-container{
+
+    text-align:center;
+
+    margin-top:30px;
+}
+
+.create-tribe-form{
+
+    max-width:500px;
+
+    margin:0 auto;
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    margin-bottom:25px;
+}
+
+.form-group label{
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+    color:#2b1b11;
+
+    font-size:18px;
+}
+
+.form-group input{
+
+    padding:14px;
+
+    font-size:16px;
+}
+
+.buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-top:30px;
+}

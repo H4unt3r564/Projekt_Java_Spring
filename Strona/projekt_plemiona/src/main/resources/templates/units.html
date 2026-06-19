@@ -26,6 +26,17 @@
         <a href="/map">Mapa</a>
         <a href="/trade">Handel</a>
         <a href="/reports">Raporty</a>
+        <a
+                th:if="${!hasTribe}"
+                th:href="@{/tribe/create}">
+            Utwórz gildię
+        </a>
+
+        <a
+                th:if="${hasTribe}"
+                th:href="@{/tribe(tribeId=${tribeId})}">
+            Moja gildia
+        </a>
         <a href="/login">Wyloguj</a>
 
     </div>
